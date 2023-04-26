@@ -1,0 +1,8 @@
+dog(rottweiler).
+cat(munchkin).
+bird(12).
+giraffe(34.82).
+elephant(23.00E-90)
+?-.
+Ant(antz).
+animal(A) :- cat(A).
