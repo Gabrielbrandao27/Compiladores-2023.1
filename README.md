@@ -17,9 +17,9 @@ https://github.com/TangoEnSkai/mini-c-compiler-c/blob/master/mini_c.gr<br>
 e a gramática completa de C pode ser encontrada em:<br>
 https://cs.wmich.edu/~gupta/teaching/cs4850/sumII06/The%20syntax%20of%20C%20in%20Backus-Naur%20form.htm ).<br><br>
 
-<h3>Sobre o gerador de scanners:<h3> sua entrada deve ser um conjunto de expressões regulares identificadas pelo tipo de token denotado com alguma possível anotação. A saída deverá ser um scanner para os tokens especificados na entrada.
+<h3>Sobre o gerador de scanners:</h3> sua entrada deve ser um conjunto de expressões regulares identificadas pelo tipo de token denotado com alguma possível anotação. A saída deverá ser um scanner para os tokens especificados na entrada.
 
-<br>Sobre o parser:<br> sua entrada deverá ser uma lista de tokens gerada pelo scanner correspondente à linguagem Mini-C e sua saída deverá ser uma árvore sintática para o programa dado como entrada ao scanner, em caso de aceitação do programa, ou uma lista de erros, em caso de não-aceitação.
+<h3>Sobre o parser:</h3> sua entrada deverá ser uma lista de tokens gerada pelo scanner correspondente à linguagem Mini-C e sua saída deverá ser uma árvore sintática para o programa dado como entrada ao scanner, em caso de aceitação do programa, ou uma lista de erros, em caso de não-aceitação.
 
 Os entregáveis são:
 - Código fonte
