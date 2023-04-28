@@ -1,0 +1,56 @@
+BNF Prolog
+
+1.<program> ::= <clause list> <query>
+2.<program> ::= <query>
+
+3.<clause list> ::= <clause>
+4.<clause list> ::= <clause> <clause list'>
+5.<clause list'> ::= <clause> <clause list>
+
+6.<clause> ::= <predicate> .
+7.<clause> ::= <predicate> :- <predicate list> .
+
+8.<predicate list> ::= <predicate>
+9.<predicate list> ::= <predicate> , <predicate list'>
+10.<predicate list'> ::= <predicate> , <predicate list>
+
+11.<predicate> ::= atom
+12.<predicate> ::= atom ( <term list> )
+
+13.<term list> ::= <term>
+14.<term list> ::= <term> , <term list'>
+15.<term list'> ::= <term> , <term list>
+
+16.<term> ::= numeral
+17.<term> ::= atom
+18.<term> ::= variable
+19.<term> ::= <structure>
+
+20.<structure> ::= atom ( <term list> )
+
+21.<query> ::= ?- <predicate list>.
+
+
+
+Follow -> pra cada símbolo não terminal, queremos saber o que pode aparecer após derivação do símbolo.
+    1- O first do próximo símbolo não terminal
+    2- Se tiver épsilon, continua pro próximo símbolo não terminal e assim sussessivamente
+    3- Se o último símbolo não terminal for o último da regra, o Follow do símbolo não terminal que deu origem à regra
+    tá contido no Follow do último símbolo.
+
+
+
+
+                   |  atom | numeral | variable |   .  |  ,   |  ?-   |  :-  |  (  |   )   |
+<program>          |   1   |         |          |      |  2   |       |      |     |       |
+<clause list>      |  3,4  |         |          |      |      |       |      |     |       |
+<clause list'>     |   5   |         |          |      |      |       |      |     |       |
+<clause>           |  6,7  |         |          |      |      |       |      |     |       |
+<predicate list>   |  8,9  |         |          |      |      |       |      |     |       |
+<predicate list'>  |  10   |         |          |      |      |       |      |     |       |
+<predicate>        | 11,12 |         |          |      |      |       |      |     |       |
+<term list>        | 13,14 |  13,14  |   13,14  |      |      |       |      |     |       |
+<term list'>       |  15   |   15    |    15    |      |      |       |      |     |       |
+<term>             | 16,19 |   17    |    18    |      |      |       |      |     |       |
+<structure>        |  20   |         |          |      |      |       |      |     |       |
+<query>            |       |         |          |      |      |  21   |      |     |       |
