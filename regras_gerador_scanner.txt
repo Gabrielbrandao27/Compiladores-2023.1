@@ -1,0 +1,12 @@
+Operadores Gerador de Scanner
+
+("identificador", "[A-z]([A-z]+[0-9])*")
+("numeral", "[0-9]([0-9])*(.([0-9])*)?") 
+
+[0-9] [a-z] [A-z] [A-Z] -> conjunto
+? -> match opcional
+* -> repetição de 0 a N
++ -> ou
+() -> delimitação de termo
+
+[0-9][0-9]*.[0-9]*?
