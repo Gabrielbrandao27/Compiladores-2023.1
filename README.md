@@ -4,10 +4,11 @@ Repositório para trabalho da matéria Compiladores
 Step 1- Ver a BNF da linguagem e identificar os tokens<br>
 Step 2- Fazer as Expressões Regulares para cada token<br>
 Step 3- Fazer o Gerador de Scanner que usa de entrada a lista de Expressões Regulares
-  e gera de saída uma tabela representando o autômato e também o próprio Scanner<br>
-Step 4- Obter a Saída do Scanner, que será uma lista de (token, tipo) e fazer o Parser Top-bottom<br>
+  e gera de saída uma tabela representando o autômato<br>
+Step 4- Fazer o Scanner que recebe a tabela do gerador de Scanner e a saída do Scanner será uma lista de (token, tipo)<br>
+  e fazer o Parser Top-bottom<br>
 Step 5- Para fazer o Parser Top-bottom precisa remover as recursões à esquerda da BNF
-  e identificar os First(x) e Follow(x) de cada token<br>
+  e identificar os First(x) e Follow(x) de cada token e montar a tabela<br>
 Step 6- Fazer o Parser Top-bottom tomando como entrada a lista de (token, tipo)
   e gerar como saída uma árvore sintática<br>
 
