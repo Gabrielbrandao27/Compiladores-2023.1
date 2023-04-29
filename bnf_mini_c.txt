@@ -1,0 +1,66 @@
+<Function> ::= <Type> identifier ( <ArgList> ) <CompoundStmt>
+
+<ArgList> ::= <Arg> 
+<ArgList> ::= <ArgList> , <Arg>
+
+<Arg> ::= <Type> identifier
+
+<Declaration> ::= <Type> <IdentList> ;
+
+<Type> ::= int
+<Type> ::= float
+
+<IdentList> ::= identifier , <IdentList>
+<IdentList> ::= identifier
+
+<Stmt> ::= <ForStmt> 
+<Stmt> ::= <WhileStmt> 
+<Stmt> ::= <Expr> ; 
+<Stmt> ::= <IfStmt> 
+<Stmt> ::= <CompoundStmt>
+<Stmt> ::= <Declaration> 
+<Stmt> ::= ;
+
+<ForStmt> ::= for ( <Expr> ; <OptExpr> ; <OptExpr> ) <Stmt>
+
+<OptExpr> ::= <Expr>
+<OptExpr> ::= ε
+
+<WhileStmt> ::= while ( <Expr> ) <Stmt>
+
+<IfStmt> ::= if ( <Expr> ) <Stmt> <ElsePart>
+
+<ElsePart> ::= else <Stmt>
+<ElsePart> ::= ε
+
+<CompoundStmt> ::= { <StmtList> }
+
+<StmtList> ::= <StmtList> <Stmt>
+<StmtList> ::= ε
+
+<Expr> ::= identifier = <Expr>
+<Expr> ::= <Rvalue>
+
+<Rvalue> ::= <Rvalue> <Compare> <Mag>
+<Rvalue> ::= <Mag>
+
+<Compare> ::= == 
+<Compare> ::= <
+<Compare> ::= >
+<Compare> ::= <=
+<Compare> ::= >=
+<Compare> ::= !=
+
+<Mag> ::= <Mag> + <Term> 
+<Mag> ::= <Mag> - <Term>
+<Mag> ::= <Term>
+
+<Term> ::= <Term> * <Factor>
+<Term> ::= <Term> / <Factor>
+<Term> ::= <Factor>
+
+<Factor> ::= ( <Expr> )
+<Factor> ::= - <Factor>
+<Factor> ::= + <Factor>
+<Factor> ::= identifier
+<Factor> ::= number

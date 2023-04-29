@@ -1,2 +1,2 @@
 # Gerador de scanner com entrada = expressão regular
-# e saída = tabela autômato e scanner
+# e saída = tabela autômato
