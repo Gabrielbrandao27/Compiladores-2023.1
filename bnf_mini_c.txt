@@ -1,7 +1,7 @@
 1.<Function> ::= <Type> identifier ( <ArgList> ) <CompoundStmt>
 
 2.<ArgList> ::= <Arg> 
-3.<ArgList> ::= <ArgList> , <Arg>
+3.<ArgList> ::= <Arg> , <ArgList>
 
 4.<Arg> ::= <Type> identifier
 
@@ -42,7 +42,7 @@
 28.<Expr> ::= <Rvalue>
 
 29.<Rvalue> ::= <Mag>
-30.<Rvalue> ::= <Rvalue> <Compare> <Mag>
+30.<Rvalue> ::= <Mag> <Compare> <Rvalue>
 
 31.<Compare> ::= == 
 32.<Compare> ::= <
@@ -51,16 +51,41 @@
 35.<Compare> ::= >=
 36.<Compare> ::= !=
 
-37.<Mag> ::= <Mag> + <Term> 
-38.<Mag> ::= <Mag> - <Term>
-39.<Mag> ::= <Term>
+37.<Mag> ::= <Term>
+38.<Mag> ::= <Term> + <Mag>
+39.<Mag> ::= <Term> - <Mag>
 
-40.<Term> ::= <Term> * <Factor>
-41.<Term> ::= <Term> / <Factor>
-42.<Term> ::= <Factor>
+40.<Term> ::= <Factor>
+41.<Term> ::= <Factor> * <Term>
+42.<Term> ::= <Factor> / <Term>
 
 43.<Factor> ::= ( <Expr> )
 44.<Factor> ::= - <Factor>
 45.<Factor> ::= + <Factor>
 46.<Factor> ::= identifier
 47.<Factor> ::= number
+
+
+Tabela de Firsts:
+
+               |  identifier |  number  | int  | float |  if  | else |  for  | while |  ,   |   .  |   ;   |  {   |  }  |    (     |    )  |   =  |  ==  |  <    |  >   |  <= |   >=  |  !=  |    -     |   +      |  *  |   /   |
+<Function>     |             |          |   1  |   1   |      |      |       |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
+<ArgList>      |             |          |  2,3 |  2,3  |      |      |       |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
+<Arg>          |             |          |   4  |   4   |      |      |       |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
+<Declaration>  |             |          |   5  |   5   |      |      |       |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
+<Type>         |             |          |   6  |   7   |      |      |       |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
+<IdentList>    |    8,9      |          |      |       |      |      |       |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
+<Stmt>         |     12      |          |  15  |  15   |  13  |      |  10   |   11  |      |      |   16  |  14  |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
+<ForStmt>      |             |          |      |       |      |      |  17   |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
+<OptExpr>      |     18      |     18   |      |       |      |      |       |       |      |      |       |      |     |   18     |       |      |      |       |      |     |       |      |   18     |   18     |     |       |
+<WhileStmt>    |             |          |      |       |      |      |       |   20  |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
+<IfStmt>       |             |          |      |       |  21  |      |       |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
+<ElsePart>     |             |          |      |       |      |  22  |       |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
+<CompoundStmt> |             |          |      |       |      |      |       |       |      |      |       |  24  |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
+<StmtList>     |     25      |          |  25  |  25   |  25  |      |  25   |  25   |      |      |   25  |  25  |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
+<Expr>         |    27,28    |    28    |      |       |      |      |       |       |      |      |       |      |     |   28     |       |      |      |       |      |     |       |      |   28     |   28     |     |       |
+<Rvalue>       |    29,30    |  29,30   |      |       |      |      |       |       |      |      |       |      |     |  29,30   |       |      |      |       |      |     |       |      |  29,30   |  29,30   |     |       |
+<Compare>      |             |          |      |       |      |      |       |       |      |      |       |      |     |          |       |      |  31  |  32   |  33  | 34  |  35   |  36  |          |          |     |       |
+<Mag>          |  37,38,39   | 37,38,39 |      |       |      |      |       |       |      |      |       |      |     | 37,38,39 |       |      |      |       |      |     |       |      | 37,38,39 | 37,38,39 |     |       |
+<Term>         |   40-42     |  40-42   |      |       |      |      |       |       |      |      |       |      |     |  40-42   |       |      |      |       |      |     |       |      |   40-42  |   40-42  |     |       |
+<Factor>       |   43-47     |  43-47   |      |       |      |      |       |       |      |      |       |      |     |  43-47   |       |      |      |       |      |     |       |      |   43-47  |   43-47  |     |       |
