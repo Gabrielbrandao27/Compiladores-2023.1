@@ -1,66 +1,66 @@
-<Function> ::= <Type> identifier ( <ArgList> ) <CompoundStmt>
+1.<Function> ::= <Type> identifier ( <ArgList> ) <CompoundStmt>
 
-<ArgList> ::= <Arg> 
-<ArgList> ::= <ArgList> , <Arg>
+2.<ArgList> ::= <Arg> 
+3.<ArgList> ::= <ArgList> , <Arg>
 
-<Arg> ::= <Type> identifier
+4.<Arg> ::= <Type> identifier
 
-<Declaration> ::= <Type> <IdentList> ;
+5.<Declaration> ::= <Type> <IdentList> ;
 
-<Type> ::= int
-<Type> ::= float
+6.<Type> ::= int
+7.<Type> ::= float
 
-<IdentList> ::= identifier , <IdentList>
-<IdentList> ::= identifier
+8.<IdentList> ::= identifier , <IdentList>
+9.<IdentList> ::= identifier
 
-<Stmt> ::= <ForStmt> 
-<Stmt> ::= <WhileStmt> 
-<Stmt> ::= <Expr> ; 
-<Stmt> ::= <IfStmt> 
-<Stmt> ::= <CompoundStmt>
-<Stmt> ::= <Declaration> 
-<Stmt> ::= ;
+10.<Stmt> ::= <ForStmt> 
+11.<Stmt> ::= <WhileStmt> 
+12.<Stmt> ::= <Expr> ; 
+13.<Stmt> ::= <IfStmt> 
+14.<Stmt> ::= <CompoundStmt>
+15.<Stmt> ::= <Declaration> 
+16.<Stmt> ::= ;
 
-<ForStmt> ::= for ( <Expr> ; <OptExpr> ; <OptExpr> ) <Stmt>
+17.<ForStmt> ::= for ( <Expr> ; <OptExpr> ; <OptExpr> ) <Stmt>
 
-<OptExpr> ::= <Expr>
-<OptExpr> ::= ε
+18.<OptExpr> ::= <Expr>
+19.<OptExpr> ::= ε
 
-<WhileStmt> ::= while ( <Expr> ) <Stmt>
+20.<WhileStmt> ::= while ( <Expr> ) <Stmt>
 
-<IfStmt> ::= if ( <Expr> ) <Stmt> <ElsePart>
+21.<IfStmt> ::= if ( <Expr> ) <Stmt> <ElsePart>
 
-<ElsePart> ::= else <Stmt>
-<ElsePart> ::= ε
+22.<ElsePart> ::= else <Stmt>
+23.<ElsePart> ::= ε
 
-<CompoundStmt> ::= { <StmtList> }
+24.<CompoundStmt> ::= { <StmtList> }
 
-<StmtList> ::= <StmtList> <Stmt>
-<StmtList> ::= ε
+25.<StmtList> ::= <Stmt> <StmtList>
+26.<StmtList> ::= ε
 
-<Expr> ::= identifier = <Expr>
-<Expr> ::= <Rvalue>
+27.<Expr> ::= identifier = <Expr>
+28.<Expr> ::= <Rvalue>
 
-<Rvalue> ::= <Rvalue> <Compare> <Mag>
-<Rvalue> ::= <Mag>
+29.<Rvalue> ::= <Mag>
+30.<Rvalue> ::= <Rvalue> <Compare> <Mag>
 
-<Compare> ::= == 
-<Compare> ::= <
-<Compare> ::= >
-<Compare> ::= <=
-<Compare> ::= >=
-<Compare> ::= !=
+31.<Compare> ::= == 
+32.<Compare> ::= <
+33.<Compare> ::= >
+34.<Compare> ::= <=
+35.<Compare> ::= >=
+36.<Compare> ::= !=
 
-<Mag> ::= <Mag> + <Term> 
-<Mag> ::= <Mag> - <Term>
-<Mag> ::= <Term>
+37.<Mag> ::= <Mag> + <Term> 
+38.<Mag> ::= <Mag> - <Term>
+39.<Mag> ::= <Term>
 
-<Term> ::= <Term> * <Factor>
-<Term> ::= <Term> / <Factor>
-<Term> ::= <Factor>
+40.<Term> ::= <Term> * <Factor>
+41.<Term> ::= <Term> / <Factor>
+42.<Term> ::= <Factor>
 
-<Factor> ::= ( <Expr> )
-<Factor> ::= - <Factor>
-<Factor> ::= + <Factor>
-<Factor> ::= identifier
-<Factor> ::= number
+43.<Factor> ::= ( <Expr> )
+44.<Factor> ::= - <Factor>
+45.<Factor> ::= + <Factor>
+46.<Factor> ::= identifier
+47.<Factor> ::= number
