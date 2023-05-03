@@ -17,14 +17,16 @@ group_rules = {
     '[0-9]': np.array(list(string.digits)),
 }
 special_operators = '*+?'
-is_operand = lambda x: x in special_operators
+is_operand = lambda x: x in special_operators # função anônima que toma x como param e 
+# se x for um special_operator retorna True
 
 OPEN_PARENTHESES_DELIMETER = '('
 CLOSE_PARENTHESES_DELIMETER = ')'
 OPEN_BRACKET_DELIMETER = '['
 CLOSE_BRACKET_DELIMETER = ']'
 
-state_transition_table = [{}] # every index is a state, state_transition_table[0] is the 0 state. state_transition_table[0]["a"] is the first transition rule of state 0 with a exact match of "a"
+state_transition_table = [{}] # every index is a state. And state_transition_table[0] is the 0 state. 
+# state_transition_table[0]["a"] is the first transition rule of state 0 with a exact match of "a"
 rules_applied_history = [] #[{ rule: "if", resulting_states: [2] }]
 #each state can have 
 
@@ -142,6 +144,7 @@ def exec_repetition_rule(actual_states, rule_history):
 
 def recursive(token, actuals):
     tokens = tokenize_regex(token)
+    print("tokens: ", tokens)
 
     actual_states = actuals
     rules_applied_history = [] #[{ rule: "if", resulting_states: [2] }]
@@ -169,6 +172,8 @@ result_final_states = []
 inline_tokens = []
 
 for regex in input:
+    print("regex: ", regex)
+    print("input: ", input)
     f_states = recursive(regex[0], [0])
 
     if regex[2] == '1':
