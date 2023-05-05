@@ -51,13 +51,13 @@
 35.<Compare> ::= >=
 36.<Compare> ::= !=
 
-37.<Mag> ::= <Term>
+'''37.<Mag> ::= <Term>
 38.<Mag> ::= <Term> + <Mag>
 39.<Mag> ::= <Term> - <Mag>
 
 40.<Term> ::= <Factor>
 41.<Term> ::= <Factor> * <Term>
-42.<Term> ::= <Factor> / <Term>
+42.<Term> ::= <Factor> / <Term>'''
 
 43.<Factor> ::= ( <Expr> )
 44.<Factor> ::= - <Factor>
@@ -66,7 +66,24 @@
 47.<Factor> ::= number
 
 
-Tabela de Firsts:
+First(Function): {int, float}
+First(ArgList): {int, float}
+First(Arg): {int, float}
+First(Declaration): {int, float}
+First(Type): {int, float}
+First(IdentList): {identifier}
+First(Stmt): {identifier, int, float, if, for, while, ;, {}
+First(ForStmt): {for}
+First(OptExpr): {identifier, number, (, -, +}
+First(WhileStmt): {while}
+First(IfStmt): {if}
+First(ElsePart): {else}
+First(CompoundStmt): {{}
+First(StmtList): {identifier, int, float, if, for, while, ;, {}
+'''First(Expr): {identifier, number, (, -, +}'''
+
+
+Tabela de Look Ahead:
 
                |  identifier |  number  | int  | float |  if  | else |  for  | while |  ,   |   .  |   ;   |  {   |  }  |    (     |    )  |   =  |  ==  |  <    |  >   |  <= |   >=  |  !=  |    -     |   +      |  *  |   /   |
 <Function>     |             |          |   1  |   1   |      |      |       |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
