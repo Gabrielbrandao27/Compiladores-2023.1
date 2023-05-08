@@ -28,26 +28,26 @@ tokens = [['(', '('], [')', ')'], ['{', '{'], ['}', '}'], [',', ','], ['.', '.']
          ['else', 'else'], ['var1', 'identifier'], ['123', 'number'], '$']
 
 simbolos = {
-    "Function" : "0",
-    "ArgList" : "1",
-    "Arg" : "2",
-    "Declaration" : "3",
-    "Type" : "4",
-    "IdentList" : "5",
-    "Stmt" : "6",
-    "ForStmt" : "7",
-    "OptExpr" : "8",
-    "whileStmt" : "9",
-    "IfStmt" : "10",
-    "ElsePart" : "11",
-    "CompoundStmt" : "12",
-    "StmtList" : "13",
-    "Expr" : "14",
-    "Rvalue" : "15",
-    "Compare" : "16",
-    "Mag" : "17",
-    "Term" : "18",
-    "Factor" : "19"
+    "Function" : 0,
+    "ArgList" : 1,
+    "Arg" : 2,
+    "Declaration" : 3,
+    "Type" : 4,
+    "IdentList" : 5,
+    "Stmt" : 6,
+    "ForStmt" : 7,
+    "OptExpr" : 8,
+    "whileStmt" : 9,
+    "IfStmt" : 10,
+    "ElsePart" : 11,
+    "CompoundStmt" : 12,
+    "StmtList" : 13,
+    "Expr" : 14,
+    "Rvalue" : 15,
+    "Compare" : 16,
+    "Mag" : 17,
+    "Term" : 18,
+    "Factor" :19
 }
 
 tokens_struct = {
@@ -168,50 +168,38 @@ for i in range(len(simbolos)):
     for j in range(len(tokens_struct)):
         lista_regras[i][j] = regras_struct[i][j]
 
-#print(lista_regras)
-
-
-iterator = iter(simbolos.keys())
-primeira_chave = next(iterator)
-
 
 empilhar(pilha, '$')
-empilhar(pilha, primeira_chave)
 
-print(pilha)
+regra_atual = ''
 
-regra = ''
+for token in tokens:
 
-for index, token in enumerate(tokens):
-    token_atual = token
-    print(token_atual)
+    if token != '$':
 
-    if index < len(tokens)-1:
-      prox_token = tokens[index+1]
-    else:
-        prox_token = None
+        for simb in simbolos:
+            empilhar(pilha, simb)
 
+            i = int(simbolos.get(topo(pilha)))
+            j = int(tokens_struct.get(token[1]))
 
-    while topo(pilha) != '$' and prox_token != '$':
-        
-        i = int(simbolos.get(topo(pilha)))
-        j = int(tokens_struct.get(token_atual[1]))
-        print("i: ", i, "j: ", j)
-        regra = lista_regras[i][j]
-        pilha.pop()
-        print("Regra: ", regra)
-        
-        for r in reversed(regra):
-            empilhar(pilha, r)
+            print("i: ", i, "j: ", j)
 
-        if topo(pilha) == token_atual:
-            print("ok")
+            regra_atual = lista_regras[i][j]
             pilha.pop()
 
+            print("Regra: ", regra_atual)
+            
+            for r in reversed(regra_atual):
+                empilhar(pilha, r)
 
+            while topo(pilha) != '$':
 
+            #     # Compara os elementos da regra A->a com o token e remove 1 a 1 até chegar no $
+            #     if topo(pilha) == token_atual:
+            #         print("ok")
+            #         pilha.pop()
+                pilha.pop()
 
-
-
-
-print(pilha)
+    else:
+        print("Acabaram os tokens")
