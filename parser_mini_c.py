@@ -1,5 +1,6 @@
 # Um parser que recebe a lista de tokens e tipos e retorna a árvore sintática
 pilha = []
+saida = []
 
 def vazia(pilha):
     return pilha == []
@@ -81,8 +82,8 @@ tokens_struct = {
 
 regras_struct = {
     0: {
-        0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '', 9: '', 10: '', 11: '', 12: '',
-         13: 'opa', 14: '', 15: '', 16: '', 17: '', 18: '', 19: '', 20: '', 21: '', 22: '', 23: '', 24: '', 25: ''
+        0: '', 1: '', 2: 'Type identifier ( ArgList ) CompoundStmt', 3: 'Type identifier ( ArgList ) CompoundStmt', 4: '', 5: '', 6: '', 7: '', 8: '', 9: '', 10: '', 11: '', 12: '',
+         13: '', 14: '', 15: '', 16: '', 17: '', 18: '', 19: '', 20: '', 21: '', 22: '', 23: '', 24: '', 25: ''
     },
     1: {
         0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '', 9: '', 10: '', 11: '', 12: '',
@@ -97,7 +98,7 @@ regras_struct = {
         13: '', 14: '', 15: '', 16: '', 17: '', 18: '', 19: '', 20: '', 21: '', 22: '', 23: '', 24: '', 25: ''
     },
     4: {
-        0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '', 9: '', 10: '', 11: '', 12: '',
+        0: '', 1: '', 2: 'int', 3: 'float', 4: '', 5: '', 6: '', 7: '', 8: '', 9: '', 10: '', 11: '', 12: '',
         13: '', 14: '', 15: '', 16: '', 17: '', 18: '', 19: '', 20: '', 21: '', 22: '', 23: '', 24: '', 25: ''
     },
     5: {
@@ -170,36 +171,45 @@ for i in range(len(simbolos)):
 
 empilhar(pilha, '$')
 
-regra_atual = ''
-
-for token in tokens:
-
-    if token != '$':
+for token_atual in tokens:
+    if token_atual != '$':
 
         for simb in simbolos:
             empilhar(pilha, simb)
 
-            i = int(simbolos.get(topo(pilha)))
-            j = int(tokens_struct.get(token[1]))
+            while topo(pilha) != '$':
+                if topo(pilha) in simbolos:
 
-            print("i: ", i, "j: ", j)
+                    i = int(simbolos.get(topo(pilha)))
+                    j = int(tokens_struct.get(token_atual[1]))
 
-            regra_atual = lista_regras[i][j]
-            pilha.pop()
-
-            print("Regra: ", regra_atual)
-
-            if regra_atual != '':
-            
-                for r in reversed(regra_atual):
-                    empilhar(pilha, r)
-
-                while topo(pilha) != '$':
-
-                    # Compara os elementos da regra A->a com o token e remove 1 a 1 até chegar no $
-
+                    regra_atual = lista_regras[i][j]
+                    #print("Pilha: ", pilha)
                     pilha.pop()
-            
+
+                    if regra_atual != '':
+                        # print("token: ", token_atual)
+                        # print("Simbolo: ", simb)
+                        # print("i: ", i, "j: ", j)
+                        # print("Regra: ", regra_atual)
+
+                        vector_regra_atual = regra_atual.split()
+
+                        for r in reversed(vector_regra_atual):
+                            empilhar(pilha, r)    
+                        #print("Pilha atualizada: ", pilha)        
+                else:
+                    if topo(pilha) == token_atual[1]:
+                        saida.append(token_atual)
+                        #print("Saída: ", token_atual[1])
+                        
+                    else:
+                        print("Erro! Token inválido: ", topo(pilha))
+                    
+                    pilha.pop()
+                    #print("Pilha após saída: ", pilha)
 
     else:
         print("Acabaram os tokens")
+
+print("Saída: ", saida)

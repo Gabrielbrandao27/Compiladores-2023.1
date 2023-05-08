@@ -68,8 +68,9 @@
 49.<Factor> ::= number
 
 
-First(a)
+First(α)
 Follow(A)
+"A" é o símbolo não-terminal da esquerda da regra. "α" é o lado direito da regra.
 
 First(Function): {int, float}
 First(ArgList): {int, float}
@@ -97,12 +98,13 @@ First(Factor): {identifier, number, (, -, +}
 
 Tabela de Look Ahead:
 
-               |  identifier |  number  | int  | float |  if  | else |  for  | while |  ,   |   .  |   ;   |  {   |  }  |    (     |    )  |   =  |  ==  |  <    |  >   |  <= |   >=  |  !=  |    -     |   +      |  *  |   /   |
-<Function>     |             |          |      |       |      |      |       |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
+            a
+     A         |  identifier |  number  | int  | float |  if  | else |  for  | while |  ,   |   .  |   ;   |  {   |  }  |    (     |    )  |   =  |  ==  |  <    |  >   |  <= |   >=  |  !=  |    -     |   +      |  *  |   /   |
+<Function>     |             |          |  1   |   1   |      |      |       |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
 <ArgList>      |             |          |      |       |      |      |       |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
 <Arg>          |             |          |      |       |      |      |       |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
 <Declaration>  |             |          |      |       |      |      |       |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
-<Type>         |             |          |      |       |      |      |       |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
+<Type>         |             |          |  6   |   7   |      |      |       |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
 <IdentList>    |             |          |      |       |      |      |       |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
 <Stmt>         |             |          |      |       |      |      |       |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
 <ForStmt>      |             |          |      |       |      |      |       |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |     |       |
