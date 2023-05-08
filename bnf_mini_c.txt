@@ -68,6 +68,9 @@
 49.<Factor> ::= number
 
 
+First(a)
+Follow(A)
+
 First(Function): {int, float}
 First(ArgList): {int, float}
 First(Arg): {int, float}
