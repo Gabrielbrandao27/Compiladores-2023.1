@@ -168,7 +168,6 @@ for i in range(len(simbolos)):
     for j in range(len(tokens_struct)):
         lista_regras[i][j] = regras_struct[i][j]
 
-
 empilhar(pilha, '$')
 
 regra_atual = ''
@@ -189,17 +188,18 @@ for token in tokens:
             pilha.pop()
 
             print("Regra: ", regra_atual)
+
+            if regra_atual != '':
             
-            for r in reversed(regra_atual):
-                empilhar(pilha, r)
+                for r in reversed(regra_atual):
+                    empilhar(pilha, r)
 
-            while topo(pilha) != '$':
+                while topo(pilha) != '$':
 
-            #     # Compara os elementos da regra A->a com o token e remove 1 a 1 até chegar no $
-            #     if topo(pilha) == token_atual:
-            #         print("ok")
-            #         pilha.pop()
-                pilha.pop()
+                    # Compara os elementos da regra A->a com o token e remove 1 a 1 até chegar no $
+
+                    pilha.pop()
+            
 
     else:
         print("Acabaram os tokens")
