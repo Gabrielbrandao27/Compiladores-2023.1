@@ -169,16 +169,17 @@ for i in range(len(simbolos)):
     for j in range(len(tokens_struct)):
         lista_regras[i][j] = regras_struct[i][j]
 
-empilhar(pilha, '$')
+empilhar(pilha, '$') #Precisa também incluir o símbolo inicial da gramática
 
 for token_atual in tokens:
     if token_atual != '$':
 
-        for simb in simbolos:
+        for simb in simbolos: #Não entendi porque faz isso aqui...
             empilhar(pilha, simb)
 
             while topo(pilha) != '$':
-                if topo(pilha) in simbolos:
+                if topo(pilha) in simbolos: # Isso aqui não ficou legal... muitas verificações desnecessárias. 
+                                            # Sugiro definir uma codificação em que não precise usar o "in" (ele é um for disfarçado)
 
                     i = int(simbolos.get(topo(pilha)))
                     j = int(tokens_struct.get(token_atual[1]))
@@ -199,12 +200,12 @@ for token_atual in tokens:
                             empilhar(pilha, r)    
                         #print("Pilha atualizada: ", pilha)        
                 else:
-                    if topo(pilha) == token_atual[1]:
+                    if topo(pilha) == token_atual[1]: #A saída é uma árvore, não uma lista de tokens.
                         saida.append(token_atual)
                         #print("Saída: ", token_atual[1])
                         
                     else:
-                        print("Erro! Token inválido: ", topo(pilha))
+                        print("Erro! Token inválido: ", topo(pilha)) #Veja as regras de tratamento de erros.
                     
                     pilha.pop()
                     #print("Pilha após saída: ", pilha)
