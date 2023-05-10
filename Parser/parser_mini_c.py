@@ -1,4 +1,3 @@
-# Um parser que recebe a lista de tokens e tipos e retorna a árvore sintática
 pilha = []
 saida = []
 
@@ -107,7 +106,7 @@ regras_struct = {
          "(": '', ")": '', "=": '', "==": '', "<": '', ">": '', "<=": '', ">=": '', "!=": '', "-": '', "+": '', "*": '', "/": ''
     },
     "IdentList": {
-        "identifier": '', "number": '', "int": '', "float": '', "if": '', "else": '', "for": '', "while": '', ",": '', ".": '', ";": '', "{": '', "}": '',
+        "identifier": 'identifier', "number": '', "int": '', "float": '', "if": '', "else": '', "for": '', "while": '', ",": '', ".": '', ";": '', "{": '', "}": '',
          "(": '', ")": '', "=": '', "==": '', "<": '', ">": '', "<=": '', ">=": '', "!=": '', "-": '', "+": '', "*": '', "/": ''
     },
     "Stmt": {
@@ -191,6 +190,8 @@ while token_atual[1] != '$':
         regra_atual = regras_struct[topo(pilha)][token_atual[1]]
         print("Regra atual:", regra_atual)
 
+        empilhar(saida, topo(pilha))
+        empilhar(saida, regra_atual)
         pilha.pop()
 
         vector_regra_atual = regra_atual.split()
@@ -200,10 +201,12 @@ while token_atual[1] != '$':
     else:
         if topo(pilha) == token_atual[1]:
             pilha.pop()
-            saida.append(token_atual)
+            empilhar(saida, token_atual[1])
             print("It's a Match!! Token", token_atual[1], "removed")
             token_index += 1
             token_atual = tokens[token_index]
             print("Next token will be:", token_atual, "\n")
 
-print("Saída: ", saida)
+print("Saída:")
+for item in saida:
+    print(item)
