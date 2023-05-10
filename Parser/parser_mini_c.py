@@ -22,11 +22,19 @@ def terminal(item):
     if item in tokens_struct:
         return True
     
-tokens = [['var1', 'identifier'], ['123', 'number'], ['1234', 'int'], ['12.34', 'float'], 
-         ['if', 'if'], ['else', 'else'], ['for', 'for'], ['while', 'while'], [',', ','], 
-         ['.', '.'], [';', ';'], ['{', '{'], ['}', '}'], ['(', '('], [')', ')'], 
-         ['=', '='], ['==', '=='], ['<', '<'], ['>', '>'], ['<=', '<='], ['>=', '>='], 
-         ['!=', '!='], ['-', '-'], ['+', '+'], ['*', '*'], ['/', '/'], '$']
+# tokens = [['var1', 'identifier'], ['123', 'number'], ['1234', 'int'], ['12.34', 'float'], 
+#          ['if', 'if'], ['else', 'else'], ['for', 'for'], ['while', 'while'], [',', ','], 
+#          ['.', '.'], [';', ';'], ['{', '{'], ['}', '}'], ['(', '('], [')', ')'], 
+#          ['=', '='], ['==', '=='], ['<', '<'], ['>', '>'], ['<=', '<='], ['>=', '>='], 
+#          ['!=', '!='], ['-', '-'], ['+', '+'], ['*', '*'], ['/', '/'], '$']
+
+input = open("scanner/result.text", "r")
+tokens_line = input.read().split('\n')
+tokens = []
+for token_line in tokens_line:
+    tokens.append(token_line.split())
+
+print("Tokens: ", tokens)
 
 simbolos = {
     "Function" : 0,
@@ -182,6 +190,7 @@ for i in range(len(simbolos)):
 empilhar(pilha, '$') #Precisa também incluir o símbolo inicial da gramática
 
 for token_atual in tokens:
+    print("Token atual: ", token_atual[1])
     if token_atual != '$':
 
         for simb in simbolos: #Não entendi porque faz isso aqui...
