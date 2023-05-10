@@ -1,5 +1,6 @@
 pilha = []
 saida = []
+regras = []
 
 def vazia(pilha):
     return pilha == []
@@ -178,7 +179,9 @@ regras_struct = {
 
 empilhar(pilha, '$')
 empilhar(pilha, simbolos[0])
+empilhar(saida, topo(pilha))
 print("Pilha inicial:", pilha)
+
 token_index = 0
 token_atual = tokens[token_index]
 
@@ -190,8 +193,9 @@ while token_atual[1] != '$':
         regra_atual = regras_struct[topo(pilha)][token_atual[1]]
         print("Regra atual:", regra_atual)
 
-        empilhar(saida, topo(pilha))
-        empilhar(saida, regra_atual)
+        if not terminal(regra_atual):
+            empilhar(saida, regra_atual)
+            empilhar(regras, regra_atual)
         pilha.pop()
 
         vector_regra_atual = regra_atual.split()
@@ -201,7 +205,10 @@ while token_atual[1] != '$':
     else:
         if topo(pilha) == token_atual[1]:
             pilha.pop()
-            empilhar(saida, token_atual[1])
+
+            if token_atual[1] not in topo(regras):
+                empilhar(saida, token_atual[1])
+
             print("It's a Match!! Token", token_atual[1], "removed")
             token_index += 1
             token_atual = tokens[token_index]
