@@ -11,7 +11,6 @@ regex = pickle.load(f)
 
 final_states = regex['final_states']
 state_trasition_table = regex['state_transition_table']
-print(state_trasition_table)
 next_state = 0
 inline_token = regex['inline_tokens']
 separator_token = [' ', '\n']
