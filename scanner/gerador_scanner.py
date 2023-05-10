@@ -116,6 +116,7 @@ def exec_strict_rule(rule, actual_states):
         print('rule', rule)
         if is_escape(rule):
             continue
+
         for state in target_states:
             if state_transition_table[state].get(rule) is None:
                 print('applying rule', rule)
@@ -134,12 +135,14 @@ def exec_operand_rule(rule, actual_states, rule_history):
     if(rule == "*"):
         actual_states = exec_repetition_rule(actual_states, rule_history)
     elif (rule == "+"):
-        pass
+        actual_states = exec_add_rule(actual_states, rule_history)
     elif (rule == "?"):
         actual_states = exec_conditional_rule(actual_states, rule_history)
     
     return actual_states
 
+def exec_add_rule(_, rule_history):
+    return rule_history['states']
 
 def exec_conditional_rule(actual_states, rule_history):
     return actual_states + rule_history['states']
@@ -170,6 +173,9 @@ def recursive(token, actuals):
             actual_states = exec_operand_rule(t, actual_states, rules_applied_history[-1])
         else:
             actual_states = exec_strict_rule(t, actual_states)
+
+        if len(rules_applied_history) > 1 and rules_applied_history[-1]['rule'] == '+' and not is_escape(t):
+            actual_states = actual_states + rules_applied_history[-1]['states']
 
         rules_applied_history.append(history_object)
     return actual_states
