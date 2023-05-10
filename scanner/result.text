@@ -1,6 +1,7 @@
+123 int
 abac123 identifier
-123.123 number
-+ +
 ( (
-) (
-- -
+) )
+{ {
+} }
+$
