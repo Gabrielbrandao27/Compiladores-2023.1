@@ -22,11 +22,11 @@ def terminal(item):
     if item in tokens_struct:
         return True
     
-tokens = [['(', '('], [')', ')'], ['{', '{'], ['}', '}'], [',', ','], ['.', '.'], [';', ';'], 
+tokens = [['var1', 'identifier'], ['123', 'number'], ['1234', 'int'], ['12.34', 'float'], 
+         ['if', 'if'], ['else', 'else'], ['for', 'for'], ['while', 'while'], [',', ','], 
+         ['.', '.'], [';', ';'], ['{', '{'], ['}', '}'], ['(', '('], [')', ')'], 
          ['=', '='], ['==', '=='], ['<', '<'], ['>', '>'], ['<=', '<='], ['>=', '>='], 
-         ['!=', '!='], ['+', '+'], ['-', '-'], ['*', '*'], ['/', '/'], ['1234', 'int'], 
-         ['12.34', 'float'], ['for', 'for'], ['while', 'while'], ['if', 'if'], 
-         ['else', 'else'], ['var1', 'identifier'], ['123', 'number'], '$']
+         ['!=', '!='], ['-', '-'], ['+', '+'], ['*', '*'], ['/', '/'], '$']
 
 simbolos = {
     "Function" : 0,
@@ -47,8 +47,10 @@ simbolos = {
     "Rvalue" : 15,
     "Compare" : 16,
     "Mag" : 17,
-    "Term" : 18,
-    "Factor" :19
+    "Mag'": 18,
+    "Term" : 19,
+    "Term'": 20,
+    "Factor" :21
 }
 
 tokens_struct = {
@@ -160,6 +162,14 @@ regras_struct = {
     19: {
         0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '', 9: '', 10: '', 11: '', 12: '',
         13: '', 14: '', 15: '', 16: '', 17: '', 18: '', 19: '', 20: '', 21: '', 22: '', 23: '', 24: '', 25: ''
+    },
+    20: {
+        0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '', 9: '', 10: '', 11: '', 12: '',
+        13: '', 14: '', 15: '', 16: '', 17: '', 18: '', 19: '', 20: '', 21: '', 22: '', 23: '', 24: '', 25: ''
+    },
+    21: {
+        0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '', 9: '', 10: '', 11: '', 12: '',
+        13: '', 14: '', 15: '', 16: '', 17: '', 18: '', 19: '', 20: '', 21: '', 22: '', 23: '', 24: '', 25: ''
     }
 }
 
@@ -169,16 +179,17 @@ for i in range(len(simbolos)):
     for j in range(len(tokens_struct)):
         lista_regras[i][j] = regras_struct[i][j]
 
-empilhar(pilha, '$')
+empilhar(pilha, '$') #Precisa também incluir o símbolo inicial da gramática
 
 for token_atual in tokens:
     if token_atual != '$':
 
-        for simb in simbolos:
+        for simb in simbolos: #Não entendi porque faz isso aqui...
             empilhar(pilha, simb)
 
             while topo(pilha) != '$':
-                if topo(pilha) in simbolos:
+                if topo(pilha) in simbolos: # Isso aqui não ficou legal... muitas verificações desnecessárias. 
+                                            # Sugiro definir uma codificação em que não precise usar o "in" (ele é um for disfarçado)
 
                     i = int(simbolos.get(topo(pilha)))
                     j = int(tokens_struct.get(token_atual[1]))
@@ -199,12 +210,12 @@ for token_atual in tokens:
                             empilhar(pilha, r)    
                         #print("Pilha atualizada: ", pilha)        
                 else:
-                    if topo(pilha) == token_atual[1]:
+                    if topo(pilha) == token_atual[1]: #A saída é uma árvore, não uma lista de tokens.
                         saida.append(token_atual)
                         #print("Saída: ", token_atual[1])
                         
                     else:
-                        print("Erro! Token inválido: ", topo(pilha))
+                        print("Erro! Token inválido: ", topo(pilha)) #Veja as regras de tratamento de erros.
                     
                     pilha.pop()
                     #print("Pilha após saída: ", pilha)
