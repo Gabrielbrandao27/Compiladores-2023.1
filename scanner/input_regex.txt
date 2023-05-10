@@ -1,0 +1,8 @@
+\* mult 0
+\+ plus 0
+- minus 0
+\/ div 1
+\( open_p 1
+\) close_p 1
+([0-9])*(.[0-9]([0-9])*)? numeral 0
+([0-9])*(.[0-9]([0-9])*)? numeral 0

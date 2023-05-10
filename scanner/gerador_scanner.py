@@ -4,7 +4,7 @@ import numpy as np
 import string
 import pickle
 
-f = open("regex_input.txt", "r")
+f = open("scanner/input_regex.txt", "r")
 lines = f.read().split("\n")
 
 input = []
@@ -19,6 +19,7 @@ group_rules = {
 special_operators = '*+?'
 is_operand = lambda x: x in special_operators # função anônima que toma x como param e 
 # se x for um special_operator retorna True
+is_escape = lambda x: x.startswith("\\") # função anônima que toma x como param e 
 
 OPEN_PARENTHESES_DELIMETER = '('
 CLOSE_PARENTHESES_DELIMETER = ')'
@@ -37,6 +38,10 @@ def tokenize_regex(input):
     open_bracket_delimeter_count = 0
 
     for i in range(len(input)):
+        if len(buffer) > 0 and is_escape(buffer[-1]):
+            buffer += input[i]
+            continue
+
         if f'{OPEN_PARENTHESES_DELIMETER}{CLOSE_PARENTHESES_DELIMETER}'.find(input[i]) != -1:
             if input[i] == OPEN_PARENTHESES_DELIMETER:
                 if open_parentheses_delimeter_count == 0 and buffer != '':
@@ -108,8 +113,12 @@ def exec_strict_rule(rule, actual_states):
     target_states = actual_states
     for rule in target_rules:
         mid_states = []
+        print('rule', rule)
+        if is_escape(rule):
+            continue
         for state in target_states:
             if state_transition_table[state].get(rule) is None:
+                print('applying rule', rule)
                 state_transition_table.append({})
                 new_state_index = len(state_transition_table)-1
                 state_transition_table[state][rule] = new_state_index
@@ -117,7 +126,7 @@ def exec_strict_rule(rule, actual_states):
             else:
                 mid_states.append(state_transition_table[state][rule])
         target_states = mid_states
-
+    print(state_transition_table)
     return target_states
 
 
@@ -141,26 +150,25 @@ def exec_repetition_rule(actual_states, rule_history):
         state_transition_table[state] = state_transition_table[rule_to_copy[0]]
     return actual_states + rule_history['states']
 
-
 def recursive(token, actuals):
     tokens = tokenize_regex(token)
-    print("tokens: ", tokens)
+    print(tokens)
 
     actual_states = actuals
     rules_applied_history = [] #[{ rule: "if", resulting_states: [2] }]
     for t in tokens:
         history_object = { 'rule': t, 'states': actual_states}
 
-        if t.startswith(OPEN_PARENTHESES_DELIMETER):
+        if is_escape(t):
+            print('is_escape', t)
+            actual_states = exec_strict_rule(t, actual_states)
+        elif t.startswith(OPEN_PARENTHESES_DELIMETER):
             actual_states = recursive(t[1:-1], actual_states)
         elif t in group_rules:
-            print('group rules')
             actual_states = exec_group_rule(t, actual_states)
         elif is_operand(t):
-            print('operand rule')
             actual_states = exec_operand_rule(t, actual_states, rules_applied_history[-1])
         else:
-            print('strict rule')
             actual_states = exec_strict_rule(t, actual_states)
 
         rules_applied_history.append(history_object)
@@ -172,8 +180,6 @@ result_final_states = []
 inline_tokens = []
 
 for regex in input:
-    print("regex: ", regex)
-    print("input: ", input)
     f_states = recursive(regex[0], [0])
 
     if regex[2] == '1':
@@ -184,13 +190,12 @@ for regex in input:
         'final_states': f_states
     }
     result_final_states.append(r)
-
+print(state_transition_table)
 result = {
     'state_transition_table': state_transition_table,
     'final_states': result_final_states,
     'inline_tokens': inline_tokens
 }
 
-print(result['state_transition_table'][0])
-with open('result.bin', 'wb') as f:
+with open('scanner/result.bin', 'wb') as f:
     pickle.dump(result, f)

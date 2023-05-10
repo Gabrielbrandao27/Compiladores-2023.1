@@ -2,19 +2,23 @@ import pickle
 import sys
 
 
-f = open("result.bin", "rb")
+f = open("scanner/input_code.txt", "r")
+input = f.read()
+
+f = open("scanner/result.bin", "rb")
 regex = pickle.load(f)
 
 
 final_states = regex['final_states']
 state_trasition_table = regex['state_transition_table']
+print(state_trasition_table)
 next_state = 0
 inline_token = regex['inline_tokens']
 separator_token = [' ', '\n']
 buffer = ''
 
 tokens = []
-text = sys.argv[1] + " "
+text = input + " "
 
 def return_token_name(state):
     for token in final_states:
@@ -31,20 +35,26 @@ for letter in text:
     if(next_state == None):
         token_in_buffer_name = return_token_name(actual_index)
         token_name = return_token_name(state_trasition_table[0].get(letter))
-        print(token_name)
         if token_name in inline_token:
             if token_name:
-                if len(buffer) > 0: tokens.append([buffer, token_in_buffer_name])
+                if len(buffer) > 0 and token_in_buffer_name: tokens.append([buffer[0:-1], token_in_buffer_name])
                 buffer = letter
                 next_state = state_trasition_table[0].get(letter)
                 continue
-        if letter in separator_token:
-            if len(buffer) > 0 and token_name: tokens.append([buffer, token_name])
+        token_in_buffer_name = return_token_name(actual_index)
+        if letter in separator_token and token_in_buffer_name:
+            if len(buffer) > 0 and token_in_buffer_name: tokens.append([buffer, token_in_buffer_name])
             buffer = ''
             next_state = 0
             continue
 
-        raise Exception(f'no transition for next_state: {actual_index} {actual_state} and letter: {letter}')
+        
+        raise Exception(f'invalid token {buffer}')
 
-print(tokens)
+
+with open('scanner/result.text', 'w') as f:
+    file_text = map(lambda x: ' '.join([x[0].strip(), x[1].strip()]).replace('\n', '').strip(), tokens)
+    file_text = '\n'.join(file_text)
+    print(file_text)
+    f.write(file_text)
 
