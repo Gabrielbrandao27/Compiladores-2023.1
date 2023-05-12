@@ -191,17 +191,23 @@ while token_atual[1] != '$':
     if not terminal(topo(pilha)): 
         print("Topo da pilha:", topo(pilha))
         regra_atual = regras_struct[topo(pilha)][token_atual[1]]
-        print("Regra atual:", regra_atual)
 
-        if not terminal(regra_atual):
-            empilhar(saida, regra_atual)
-            empilhar(regras, regra_atual)
-        pilha.pop()
+        if regra_atual != '':
+            print("Regra atual:", regra_atual)
 
-        vector_regra_atual = regra_atual.split()
-        for r in reversed(vector_regra_atual):
-            empilhar(pilha, r)
-        print("Pilha atualizada:", pilha)
+            if not terminal(regra_atual):
+                empilhar(saida, regra_atual)
+                empilhar(regras, regra_atual)
+            pilha.pop()
+
+            vector_regra_atual = regra_atual.split()
+            for r in reversed(vector_regra_atual):
+                empilhar(pilha, r)
+            print("Pilha atualizada:", pilha)
+        
+        else:
+            print("Erro! Token", token_atual[1], "inválido! Regra vazia!")
+            break
     else:
         if topo(pilha) == token_atual[1]:
             pilha.pop()
@@ -213,7 +219,14 @@ while token_atual[1] != '$':
             token_index += 1
             token_atual = tokens[token_index]
             print("Next token will be:", token_atual, "\n")
+            if token_atual == []:
+                print("Erro! Token", token_atual, "vazio!")
+                break
+        
+        else:
+            print("Erro! Token", token_atual[1], "inválido!")
+            break
 
-print("Saída:")
+print("\nSaída:")
 for item in saida:
     print(item)
