@@ -26,6 +26,7 @@ def terminal(item):
 def backtracking(regra_atual, pilha, saida):
     regra_atual = regra_atual.split(' | ')
 
+    regra_atual[1]
 
     
     return 0
@@ -293,13 +294,16 @@ while token_atual[1] != '$':
                 if not terminal(regra_atual):
                     empilhar(saida, regra_atual)
                     empilhar(regras, regra_atual)
+                    
                 pilha.pop()
 
                 vector_regra_atual = regra_atual.split()
 
                 for r in reversed(vector_regra_atual):
                     empilhar(pilha, r)
+
                 print("Pilha atualizada:", pilha)
+
         else:
             print("Erro! Token", token_atual[1], "inválido! Regra vazia! Desempilhando", topo(pilha))
             if token_atual[1] in follow_simb[topo(pilha)]:
@@ -320,7 +324,7 @@ while token_atual[1] != '$':
             token_index += 1
             token_atual = tokens[token_index]
             print("Next token will be:", token_atual[1], "\n")
-            
+
             if token_atual == []:
                 print("Erro! Token", token_atual, "vazio!")
                 break
