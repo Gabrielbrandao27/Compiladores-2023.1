@@ -1,72 +1,76 @@
 1.<Function> ::= <Type> identifier ( <ArgList> ) <CompoundStmt>
 
-2.<ArgList> ::= <Arg> 
-3.<ArgList> ::= <Arg> , <ArgList>
+2.<ArgList> ::= <Arg> <ArgList2>
+3.<ArgList2> ::= , <Arg> <ArgList2>
+4.<ArgList2> ::= ε
 
-4.<Arg> ::= <Type> identifier
+5.<Arg> ::= <Type> identifier
 
-5.<Declaration> ::= <Type> <IdentList> ;
+6.<Declaration> ::= <Type> <IdentList> ;
 
-6.<Type> ::= int
-7.<Type> ::= float
+7.<Type> ::= int
+8.<Type> ::= float
 
-8.<IdentList> ::= identifier , <IdentList>
-9.<IdentList> ::= identifier
+9.<IdentList> ::= identifier <IdentList2>
+10.<IdentList2> ::= , <IdentList>
+11.<IdentList2> ::= ε
 
-10.<Stmt> ::= <ForStmt> 
-11.<Stmt> ::= <WhileStmt>
-12.<Stmt> ::= <Expr> ;
-13.<Stmt> ::= <IfStmt> 
-14.<Stmt> ::= <CompoundStmt>
-15.<Stmt> ::= <Declaration>
-16.<Stmt> ::= ;
 
-17.<ForStmt> ::= for ( <Expr> ; <OptExpr> ; <OptExpr> ) <Stmt>
+12.<Stmt> ::= <ForStmt> 
+13.<Stmt> ::= <WhileStmt>
+14.<Stmt> ::= <Expr> ;
+15.<Stmt> ::= <IfStmt> 
+16.<Stmt> ::= <CompoundStmt>
+17.<Stmt> ::= <Declaration>
+18.<Stmt> ::= ;
 
-18.<OptExpr> ::= <Expr>
-19.<OptExpr> ::= ε
+19.<ForStmt> ::= for ( <Expr> ; <OptExpr> ; <OptExpr> ) <Stmt>
 
-20.<WhileStmt> ::= while ( <Expr> ) <Stmt>
+20.<OptExpr> ::= <Expr>
+21.<OptExpr> ::= ε
 
-21.<IfStmt> ::= if ( <Expr> ) <Stmt> <ElsePart>
+22.<WhileStmt> ::= while ( <Expr> ) <Stmt>
 
-22.<ElsePart> ::= else <Stmt>
-23.<ElsePart> ::= ε
+23.<IfStmt> ::= if ( <Expr> ) <Stmt> <ElsePart>
 
-24.<CompoundStmt> ::= { <StmtList> }
+24.<ElsePart> ::= else <Stmt>
+25.<ElsePart> ::= ε
 
-25.<StmtList> ::= <Stmt> 
-26.<StmtList> ::= <Stmt> <StmtList>
-26.<StmtList> ::= ε
+26.<CompoundStmt> ::= { <StmtList> }
 
-27.<Expr> ::= identifier = <Expr>
-28.<Expr> ::= <Rvalue>
+27.<StmtList> ::= <Stmt> <StmtList2>
+28.<StmtList2> ::= <StmtList>
+29.<StmtList2> ::= ε
 
-29.<Rvalue> ::= <Mag>
-30.<Rvalue> ::= <Mag> <Compare> <Rvalue>
+30.<Expr> ::= identifier = <Expr>
+31.<Expr> ::= <Rvalue>
 
-31.<Compare> ::= == 
-32.<Compare> ::= <
-33.<Compare> ::= >
-34.<Compare> ::= <=
-35.<Compare> ::= >=
-36.<Compare> ::= !=
+32.<Rvalue> ::= <Mag> <Rvalue2>
+33.<Rvalue2> ::= <Compare> <Rvalue>
+34.<Rvalue2> ::= ε
 
-37.<Mag> ::= <Term> <Mag'>
-38.<Mag'> ::= + <Term> <Mag'>
-39.<Mag'> ::= - <Term> <Mag'>
-40.<Mag'> ::= ε
+35.<Compare> ::= == 
+36.<Compare> ::= <
+37.<Compare> ::= >
+38.<Compare> ::= <=
+39.<Compare> ::= >=
+40.<Compare> ::= !=
 
-41.<Term> ::= <Factor> <Term'>
-42.<Term'> ::= * <Factor> <Term'>
-43.<Term'> ::= / <Factor> <Term'>
-44.<Term'> ::= ε
+41.<Mag> ::= <Term> <Mag2>
+42.<Mag2> ::= + <Term> <Mag2>
+43.<Mag2> ::= - <Term> <Mag2>
+44.<Mag2> ::= ε
 
-45.<Factor> ::= ( <Expr> )
-46.<Factor> ::= - <Factor>
-47.<Factor> ::= + <Factor>
-48.<Factor> ::= identifier
-49.<Factor> ::= number
+45.<Term> ::= <Factor> <Term2>
+46.<Term2> ::= * <Factor> <Term2>
+47.<Term2> ::= / <Factor> <Term2>
+48.<Term2> ::= ε
+
+49.<Factor> ::= ( <Expr> )
+50.<Factor> ::= - <Factor>
+51.<Factor> ::= + <Factor>
+52.<Factor> ::= identifier
+53.<Factor> ::= number
 
 ------------------------------------------------------------------------------------
 
@@ -76,40 +80,58 @@ Follow(A)
 
 First(Function): {int, float}
 First(ArgList): {int, float}
+First(ArgList2): {,, ε}
 First(Arg): {int, float}
 First(Declaration): {int, float}
 First(Type): {int, float}
 First(IdentList): {identifier}
-First(Stmt): {identifier, number, int, float, if, for, while, ;, { }
+First(IdentList2): {,, ε}
+First(Stmt): {identifier, number, int, float, if, for, while, ;, {, (, -, +}
 First(ForStmt): {for}
 First(OptExpr): {identifier, number, (, -, +, ε}
 First(WhileStmt): {while}
 First(IfStmt): {if}
-First(ElsePart): {else}
+First(ElsePart): {else, ε}
 First(CompoundStmt): {{}
-First(StmtList): {identifier, int, float, if, for, while, ;, {, ε}
+First(StmtList): {identifier, number, int, float, if, for, while, ;, {, (, -, +}
+First(StmtList2): {identifier, number, int, float, if, for, while, ;, {, (, -, +, ε}
 First(Expr): {identifier, number, (, -, +}
 First(Rvalue): {identifier, number, (, -, +}
+First(Rvalue2): {==, <, >, <=, >=, !=, ε}
 First(Compare): {==, <, >, <=, >=, !=}
 First(Mag): {identifier, number, (, -, +}
-First(Mag'): {+, -, ε}
+First(Mag2): {+, -, ε}
 First(Term): {identifier, number, (, -, +}
-First(Term'): {*, /, ε}
+First(Term2): {*, /, ε}
 First(Factor): {identifier, number, (, -, +}
 
 -----------------------------------------------------------------------------------
-
-*Follow(OptExpr): {;, )}
-*Follow(ElsePart): {else, identifier, int, float, if, for, while, ;, {}
-Follow(IfStmt): {else, identifier, int, float, if, for, while, ;, {}
-Follow(Stmt): {else, identifier, int, float, if, for, while, ;, {}
-Follow(ForStmt): {else, identifier, int, float, if, for, while, ;, {}
-Follow(WhileStmt): {else, identifier, int, float, if, for, while, ;, {}
-*Follow(StmtList): {}}
-*Follow(Mag'): {;, ), ==, <, >, <=, >=, !=}
-Follow(Mag): {;, ), ==, <, >, <=, >=, !=}
+Follow(Function): {$}
+Follow(ArgList): {)}
+Follow(ArgList2): {)}
+Follow(Arg): {,, )}
+Follow(Declaration): {else, identifier, int, float, if, for, while, ;, {, }}
+Follow(Type): {identifier}
+Follow(IdentList): {;}
+Follow(IdentList2): {;}
+Follow(OptExpr): {;, )}
+Follow(ElsePart): {else, identifier, int, float, if, for, while, ;, {, }}
+Follow(IfStmt): {else, identifier, int, float, if, for, while, ;, {, }}
+Follow(Stmt): {else, identifier, int, float, if, for, while, ;, {, }}
+Follow(ForStmt): {else, identifier, int, float, if, for, while, ;, {, }}
+Follow(WhileStmt): {else, identifier, int, float, if, for, while, ;, {, }}
+Follow(StmtList2): {}}
+Follow(StmtList): {}}
+Follow(CompoundStmt): {}, $}
+Follow(Declaration): {}}
+Follow(Mag2): {;, )}
+Follow(Mag): {;, )}
 Follow(Rvalue): {;, )}
-Follow(Expr): {;, )}
+Follow(Rvalue2): {;, )}
+Follow(Expr): {;, ), }}
+Follow(Term2): {+ | - | ; | )}
+Follow(Term): {+ | - | ; | )}
+Follow(Factor): {* | / | + | - | ; | )}
 
 Tabela de Look Ahead:
 
@@ -133,7 +155,7 @@ Tabela de Look Ahead:
 15<Rvalue>       |   29,30     |  29,30   |      |       |      |      |       |       |      |      |       |      |     |  29,30   |       |      |      |       |      |     |       |      |  29,30   |  29,30   |     |       |
 16<Compare>      |             |          |      |       |      |      |       |       |      |      |       |      |     |          |       |      |  31  |  32   |  33  | 34  |  35   |  36  |          |          |     |       |
 17<Mag>          |     37      |    37    |      |       |      |      |       |       |      |      |       |      |     |    37    |       |      |      |       |      |     |       |      |   37     |   37     |     |       |
-18<Mag'>         |             |          |      |       |      |      |       |       |      |      |  ??   |      |     |          |  ??   |      |  ??  |  ??   |  ??  | ??  |  ??   |  ??  |   39     |   38     |     |       |
+18<Mag2>         |             |          |      |       |      |      |       |       |      |      |  ??   |      |     |          |  ??   |      |  ??  |  ??   |  ??  | ??  |  ??   |  ??  |   39     |   38     |     |       |
 19<Term>         |     41      |    41    |      |       |      |      |       |       |      |      |       |      |     |    41    |       |      |      |       |      |     |       |      |   41     |   41     |     |       |
-20<Term'>        |             |          |      |       |      |      |       |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |  42 |  43   |
+20<Term2>        |             |          |      |       |      |      |       |       |      |      |       |      |     |          |       |      |      |       |      |     |       |      |          |          |  42 |  43   |
 21<Factor>       |     48      |    49    |      |       |      |      |       |       |      |      |       |      |     |    45    |       |      |      |       |      |     |       |      |   46     |   47     |     |       |

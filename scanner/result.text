@@ -1,9 +1,12 @@
-123 int
-abac123 identifier
+int int
+main identifier
 ( (
-2711.1 float
+float float
 param1 identifier
 ) )
 { {
+int int
+hello identifier
+; ;
 } }
 $ $
