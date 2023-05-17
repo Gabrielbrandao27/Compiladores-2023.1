@@ -24,7 +24,6 @@ def terminal(item):
             return True
         
 def backtracking(regra_atual, token_atual, pilha, saida):
-    # regra_atual = 'identifier = Expr | Rvalue'
 
     producoes = regra_atual.split(' | ')
     print("Producoes: ", producoes)
@@ -33,7 +32,7 @@ def backtracking(regra_atual, token_atual, pilha, saida):
 
         print("Producao: ", producao)
         if producao == 'ε':
-            print("Regra ε")
+            print("Regra ε desempilha o topo")
             pilha.pop()
             return True
         
@@ -332,7 +331,7 @@ while token_atual[1] != '$':
 
             if regra_atual == 'ε':
                 pilha.pop()
-                print("Regra ε")
+                print("Regra ε desempilha o topo")
 
             elif '|' in regra_atual:
                 backtracking(regra_atual, token_atual, pilha, saida)
