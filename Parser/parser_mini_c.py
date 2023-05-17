@@ -23,13 +23,59 @@ def terminal(item):
         if item in regras_struct[i]:
             return True
         
-def backtracking(regra_atual, pilha, saida):
-    regra_atual = regra_atual.split(' | ')
+def backtracking(regra_atual, token_atual, pilha, saida):
+    # regra_atual = 'identifier = Expr | Rvalue'
 
-    regra_atual[1]
-
+    producoes = regra_atual.split(' | ')
+    print("Producoes: ", producoes)
     
-    return 0
+    for producao in producoes:
+
+        print("Producao: ", producao)
+        if producao == 'ε':
+            pilha.pop()
+            return True
+        
+        elif producao in tokens_struct.values():
+            pilha.pop()
+            print("Pilha atualizada: ", pilha)
+
+            if token_atual[1] not in topo(regras):
+                empilhar(saida, token_atual[1])
+
+            print("It's a Match!! Token", token_atual[1], "removed")
+
+            return True
+
+        
+        elif producao in simbolos.values():
+
+            producao = regras_struct[regra_atual][token_atual]
+            vector_regra_atual = producao.split()
+
+            for r in reversed(vector_regra_atual):
+                empilhar(pilha, r)
+
+            print("Pilha atualizada:", pilha)
+            producao = topo(pilha)
+
+            if backtracking(producao, token_atual, pilha, saida):
+                return True
+        
+        else:
+            pilha.pop()
+            vector_regra_atual = producao.split()
+
+            for r in reversed(vector_regra_atual):
+                empilhar(pilha, r)
+
+            print("Pilha atualizada:", pilha)
+            producao = topo(pilha)
+
+            if backtracking(producao, token_atual, pilha, saida):
+                return True
+        
+
 
 input = open("scanner/result.text", "r")
 tokens_line = input.read().split('\n')
@@ -279,14 +325,23 @@ while token_atual[1] != '$':
 
         print("Topo da pilha:", topo(pilha))
         regra_atual = regras_struct[topo(pilha)][token_atual[1]]
+        print("Regra atual: ", regra_atual)
 
         if regra_atual != '':
 
             if regra_atual == 'ε':
                 pilha.pop()
+                print("Regra ε")
 
             elif '|' in regra_atual:
-                backtracking(regra_atual, pilha, saida)
+                backtracking(regra_atual, token_atual, pilha, saida)
+                token_index += 1
+                token_atual = tokens[token_index]
+                print("Next token will be:", token_atual[1], "\n")
+
+                if token_atual == []:
+                    print("Erro! Token", token_atual, "vazio!")
+                    break
             
             else:
                 print("Regra atual:", regra_atual)
