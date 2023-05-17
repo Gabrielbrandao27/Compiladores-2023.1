@@ -33,6 +33,7 @@ def backtracking(regra_atual, token_atual, pilha, saida):
 
         print("Producao: ", producao)
         if producao == 'ε':
+            print("Regra ε")
             pilha.pop()
             return True
         
