@@ -321,8 +321,6 @@ while token_atual[1] != '$':
 
     if not terminal(topo(pilha)):
 
-        # if (token_atual[1] not in follow_simb[topo(pilha)].split(' | ')) and (token_atual[1] not in first_simb[topo(pilha)].split(' | ')):
-
         print("Topo da pilha:", topo(pilha))
         regra_atual = regras_struct[topo(pilha)][token_atual[1]]
         print("Regra atual: ", regra_atual)
@@ -360,13 +358,18 @@ while token_atual[1] != '$':
                 print("Pilha atualizada:", pilha)
 
         else:
-            print("Erro! Token", token_atual[1], "inválido! Regra vazia! Desempilhando", topo(pilha))
+            print("Erro! Token", token_atual[1], "inválido! Regra vazia!")
+
             if token_atual[1] in follow_simb[topo(pilha)]:
+                print("Desempilhando", topo(pilha))
                 pilha.pop()
 
-        # else:
-        #     token_index += 1
-        #     token_atual = tokens[token_index]
+            else:
+                print("Avançando a entrada de tokens procurando um token válido")
+                
+                while (token_atual not in first_simb(topo(pilha)) and token_atual not in follow_simb(topo(pilha))):
+                    token_index += 1
+                    token_atual = tokens[token_index]
             
     else:
         if topo(pilha) == token_atual[1]:
