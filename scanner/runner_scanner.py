@@ -1,59 +1,111 @@
 import pickle
+import copy
 import sys
+from utils import check_array_has_only_falsy, check_array_has_only_null
+
+def run_automata(state_trasition_table, next_state, buffer, letter):
+    actual_state = state_trasition_table[next_state]
+    next_state = actual_state[letter]
+    buffer += letter
+    return next_state, buffer
+
+def check_automatas_final_states(states, actual_automatas):
+    for i in range(len(automatas)):
+        if automatas[i] in actual_automatas:
+            if states[i] in final_states[automatas[i][1]]:
+                return automatas[i][1], i
+    
+    raise Exception(f'invalid token on line {count_line} at {count_char}')
+        
+
+def run_automata_inline_token(letter):
+    buffers = [''] * len(automatas)
+    next_states = [0] * len(automatas)
+    actual_automatas = []
+    for inline in inline_token:
+        i = inline[1]
+        try:
+            actual_automatas.append(automatas[i])
+            n_s, b = run_automata(automatas[i][0], next_states[i], buffers[i], letter)
+            next_states[i] = n_s
+            buffers[i] = b
+        except Exception as e:
+            pass
+    
+    return check_automatas_final_states(next_states, actual_automatas)
 
 
-f = open("scanner/input_code.txt", "r")
-input = f.read()
-
-f = open("scanner/result.bin", "rb")
-regex = pickle.load(f)
+# main
+f_input_code = open("scanner/input_code.txt", "r")
+input = f_input_code.read()
+f_input_automata = open("scanner/result.bin", "rb")
+regex = pickle.load(f_input_automata)
 
 
 final_states = regex['final_states']
-state_trasition_table = regex['state_transition_table']
-next_state = 0
+automatas = regex['automatas']
 inline_token = regex['inline_tokens']
 separator_token = [' ', '\n']
-buffer = ''
-
+buffers = [''] * len(automatas)
+next_states = [0] * len(automatas)
+actual_automatas = copy.deepcopy(automatas)
 tokens = []
 text = input + " "
 
-def return_token_name(state):
-    for token in final_states:
-        if state in token['final_states']:
-            return token['token_name']
-        
-    return False
+count_char = 0
+count_line = 0
+
+def is_separator_token(letter):
+    if letter == '\n':
+
+        global count_line
+        global count_char
+        count_line += 1
+        count_char = 0
+
+    return letter in separator_token
+
 
 for letter in text:
-    actual_index = next_state
-    actual_state = state_trasition_table[next_state]
-    next_state = actual_state.get(letter)
-    buffer += letter
-    if(next_state == None):
-        token_in_buffer_name = return_token_name(actual_index)
-        token_name = return_token_name(state_trasition_table[0].get(letter))
-        if token_name in inline_token:
-            if token_name:
-                if len(buffer) > 0 and token_in_buffer_name: tokens.append([buffer[0:-1], token_in_buffer_name])
-                buffer = letter
-                next_state = state_trasition_table[0].get(letter)
-                continue
-        token_in_buffer_name = return_token_name(actual_index)
-        if letter in separator_token and token_in_buffer_name:
-            if len(buffer) > 0 and token_in_buffer_name: tokens.append([buffer, token_in_buffer_name])
-            buffer = ''
-            next_state = 0
+    count_char += 1
+    if is_separator_token(letter):
+        if check_array_has_only_falsy(next_states):
             continue
+        token_name, index = check_automatas_final_states(next_states, actual_automatas)
 
-        
-        raise Exception(f'invalid token {buffer}')
+        tokens.append([buffers[index], token_name])
 
+        buffers = [''] * len(automatas)
+        next_states = [0] * len(automatas)
+        actual_automatas = copy.deepcopy(automatas)
+        continue
+
+    for i in range(len(automatas)):
+        if(automatas[i] in actual_automatas):
+            try:
+                n_s, b = run_automata(automatas[i][0], next_states[i], buffers[i], letter)
+                next_states[i] = n_s
+                buffers[i] = b
+            except Exception as e:
+                actual_automatas[i] = None
+    if check_array_has_only_null(actual_automatas):
+
+        token_name, index = check_automatas_final_states(next_states, automatas)
+        tokens.append([buffers[index], token_name])
+
+        inline_token_name, index = run_automata_inline_token(letter)
+        tokens.append([letter, inline_token_name])
+
+        buffers = [''] * len(automatas)
+        next_states = [0] * len(automatas)
+        actual_automatas = copy.deepcopy(automatas)
+        continue
+
+
+print(tokens)
 
 with open('scanner/result.text', 'w') as f:
     file_text = map(lambda x: ' '.join([x[0].strip(), x[1].strip()]).replace('\n', '').strip(), tokens)
     file_text = '\n'.join(file_text)
-    print(file_text)
     f.write(file_text)
 

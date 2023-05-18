@@ -1,1 +1,3 @@
-int main
+int main(float abc, int abcd){
+    abc = 123
+}
