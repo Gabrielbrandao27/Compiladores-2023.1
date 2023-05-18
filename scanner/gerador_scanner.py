@@ -144,7 +144,6 @@ def exec_conditional_rule(actual_states, rule_history):
 def exec_repetition_rule(actual_states, rule_history, state_transition_table):
     for state in rule_history['states']:
         for cur_state in actual_states:
-            print(cur_state)
             if state_transition_table[cur_state].get('ε') is None:
                 state_transition_table[cur_state]['ε'] = state
 
@@ -226,7 +225,6 @@ for i in range(len(input)):
 
     minimize(state_transition_table)
 
-    #print(input[i][0], ' ', state_transition_table)
     automatas.append([state_transition_table, input[i][1]])
 
     if input[i][2] == '1':
@@ -241,7 +239,6 @@ result = {
     'final_states': result_final_states,
     'inline_tokens': inline_tokens
 }
-print(result)
 
 with open('scanner/result.bin', 'wb') as f:
     pickle.dump(result, f)
