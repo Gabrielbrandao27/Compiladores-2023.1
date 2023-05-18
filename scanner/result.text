@@ -17,7 +17,7 @@ i identifier
 if if
 ( (
 hello identifier
-= = 
+= =
 2 number
 ) )
 for for
