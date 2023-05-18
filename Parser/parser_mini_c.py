@@ -2,21 +2,11 @@ pilha = []
 saida = []
 regras = []
 
-def vazia(pilha):
-    return pilha == []
-
 def empilhar(pilha, item):
     return pilha.append(item)
 
 def topo(pilha):
     return pilha[-1]
-
-def tamanho(pilha):
-    return len(pilha)
-
-def posicao(pilha, item):
-    indice = len(pilha) - 1 - pilha[::-1].index(item)
-    return indice
 
 def terminal(item):
     for i in regras_struct:
