@@ -1,3 +1,7 @@
-int main(float abc, int abcd){
-    abc = 123
+int main(float param1, int param2){
+     int hello;
+     int i;
+     if (hello=2)
+          for (i=0; i=1*2+3; i=100)
+               float result;
 }
