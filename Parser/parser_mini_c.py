@@ -83,6 +83,9 @@ tokens = []
 for token_line in tokens_line:
     tokens.append(token_line.split())
 
+fim_delim = ['$', '$']
+tokens.append(fim_delim)
+
 print("Tokens: ", tokens)
 
 simbolos = {
