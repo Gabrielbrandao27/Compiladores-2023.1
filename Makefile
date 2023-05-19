@@ -12,3 +12,4 @@ run-generator-scanner-parser:
 	python scanner/gerador_scanner.py
 	python scanner/runner_scanner.py
 	python parser/parser.py
+	
