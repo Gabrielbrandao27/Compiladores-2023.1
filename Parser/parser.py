@@ -303,7 +303,7 @@ first_simb = {
 
 empilhar(pilha, '$')
 empilhar(pilha, simbolos[0])
-empilhar(saida, topo(pilha))
+empilhar(saida, f'{topo(pilha)}->{regras_struct[simbolos[0]][tokens[0][1]]}')
 print("Pilha inicial:", pilha)
 
 token_index = 0
@@ -315,6 +315,7 @@ while token_atual[1] != '$':
     if not terminal(topo(pilha)):
 
         print("Topo da pilha:", topo(pilha))
+        empilhar(regras, topo(pilha))
         regra_atual = regras_struct[topo(pilha)][token_atual[1]]
         print("Regra atual: ", regra_atual)
 
@@ -338,7 +339,15 @@ while token_atual[1] != '$':
                 print("Regra atual:", regra_atual)
 
                 if not terminal(regra_atual):
-                    empilhar(saida, regra_atual)
+                    if '->' in topo(saida):
+                        aux = topo(saida).split('->')
+                        if not terminal(topo(aux)):
+                            empilhar(saida, f'{topo(aux)}->{regra_atual}')
+                        else:
+                            for key1, inner_dict in regras_struct.items():
+                                if inner_dict.get(token_atual[1]) == regra_atual:
+                                    pai = key1
+                            empilhar(saida, f'{pai}->{regra_atual}')
                     empilhar(regras, regra_atual)
                     
                 pilha.pop()
@@ -368,8 +377,8 @@ while token_atual[1] != '$':
         if topo(pilha) == token_atual[1]:
             pilha.pop()
 
-            if token_atual[1] not in topo(regras):
-                empilhar(saida, token_atual[1])
+            if token_atual[1] not in topo(regras) and token_atual[1] in regras_struct[topo(regras)][token_atual[1]]:
+                empilhar(saida, f'{topo(regras)}->{token_atual[1]}')
 
             print("It's a Match!! Token", token_atual[1], "removed")
             token_index += 1
@@ -385,5 +394,6 @@ while token_atual[1] != '$':
             break
 
 print("\nSaída:")
+
 for item in saida:
     print(item)
