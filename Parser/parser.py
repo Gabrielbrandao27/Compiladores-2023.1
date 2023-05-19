@@ -367,9 +367,9 @@ while token_atual[1] != '$':
                 pilha.pop()
 
             else:
-                print("Avançando a entrada de tokens procurando um token válido")
+                print("Avançando a entrada de tokens procurando um token válido\nTopo da pilha: ", topo(pilha), "\n", first_simb[topo(pilha)])
                 
-                while (token_atual not in first_simb(topo(pilha)) and token_atual not in follow_simb(topo(pilha))):
+                while (token_atual[1] not in first_simb[topo(pilha)] and token_atual[1] not in follow_simb[topo(pilha)]):
                     token_index += 1
                     token_atual = tokens[token_index]
             
