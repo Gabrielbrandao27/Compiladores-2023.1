@@ -1,5 +1,7 @@
 BNF Prolog
 
+0.<start> ::= <program> $
+
 1.<program> ::= <clause list> <query>
 2.<program> ::= <query>
 
@@ -27,6 +29,17 @@ BNF Prolog
 
 18.<query> ::= ?- <predicate list>.
 
+
+
+First(program): {atom, ?-}
+First(clause list): {atom}
+First(clause): {atom}
+First(predicate list): {atom}
+First(predicate): {atom}
+First(term list): {numeral, atom, variable}
+First(term): {numeral, atom, variable}
+First(structure): {atom}
+First(query): {?-}
 
 
 Follow -> pra cada símbolo não terminal, queremos saber o que pode aparecer após derivação do símbolo.
