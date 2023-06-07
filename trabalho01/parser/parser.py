@@ -2,6 +2,8 @@ pilha = []
 saida = []
 regras = []
 
+context_counter = 0
+
 def empilhar(pilha, item):
     return pilha.append(item)
 
@@ -135,6 +137,30 @@ tokens_struct = {
     24 : "*",
     25 : "/"
 }
+
+
+context_list = ["global"]
+
+tabela_simbolo = {} #\ 
+def function_rule(tokens):
+    global context_list
+    tabela_simbolo[tokens[1][0]] = {
+        'tipo': tokens[0][1],
+        'contexto': context_list[-1]
+    }
+
+    context_list.append(tokens[1][0])
+
+def stmt_rule(tokens):
+    global context_list
+    context_list.pop()
+
+
+regras_func = {
+    "Function": function_rule,
+    "StmtList": stmt_rule
+}
+
 
 regras_struct = {
     "Function": {
@@ -311,12 +337,15 @@ token_atual = tokens[token_index]
 
 while token_atual[1] != '$':
     print("Token atual: ", token_atual[1])
+    
 
     if not terminal(topo(pilha)):
 
         print("Topo da pilha:", topo(pilha))
         empilhar(regras, topo(pilha))
         regra_atual = regras_struct[topo(pilha)][token_atual[1]]
+        f = regras_func.get(topo(pilha))
+        if f: f((tokens[token_index:]))
         print("Regra atual: ", regra_atual)
 
         if regra_atual != '':
@@ -393,7 +422,9 @@ while token_atual[1] != '$':
             print("Erro! Token", token_atual[1], "inválido!")
             break
 
-print("\nSaída:")
+print(tabela_simbolo)
+print(tokens)
+# print("\nSaída:")
 
-for item in saida:
-    print(item)
+# for item in saida:
+#     print(item)
