@@ -1,0 +1,134 @@
+1.<Function> ::= <Type> identifier ( <ArgList> ) <CompoundStmt>
+
+2.<ArgList> ::= <Arg> <ArgList2>
+3.<ArgList2> ::= , <Arg> <ArgList2>
+4.<ArgList2> ::= ε
+
+5.<Arg> ::= <Type> identifier
+
+6.<Declaration> ::= <Type> <IdentList> ;
+
+7.<Type> ::= int
+8.<Type> ::= float
+
+9.<IdentList> ::= identifier <IdentList2>
+10.<IdentList2> ::= , <IdentList>
+11.<IdentList2> ::= ε
+
+
+12.<Stmt> ::= <ForStmt> 
+13.<Stmt> ::= <WhileStmt>
+14.<Stmt> ::= <Expr> ;
+15.<Stmt> ::= <IfStmt> 
+16.<Stmt> ::= <CompoundStmt>
+17.<Stmt> ::= <Declaration>
+18.<Stmt> ::= ;
+
+19.<ForStmt> ::= for ( <Expr> ; <OptExpr> ; <OptExpr> ) <Stmt>
+
+20.<OptExpr> ::= <Expr>
+21.<OptExpr> ::= ε
+
+22.<WhileStmt> ::= while ( <Expr> ) <Stmt>
+
+23.<IfStmt> ::= if ( <Expr> ) <Stmt> <ElsePart>
+
+24.<ElsePart> ::= else <Stmt>
+25.<ElsePart> ::= ε
+
+26.<CompoundStmt> ::= { <StmtList> }
+
+27.<StmtList> ::= <Stmt> <StmtList2>
+28.<StmtList2> ::= <StmtList>
+29.<StmtList2> ::= ε
+
+30.<Expr> ::= identifier = <Expr>
+31.<Expr> ::= <Rvalue>
+
+32.<Rvalue> ::= <Mag> <Rvalue2>
+33.<Rvalue2> ::= <Compare> <Rvalue>
+34.<Rvalue2> ::= ε
+
+35.<Compare> ::= == 
+36.<Compare> ::= <
+37.<Compare> ::= >
+38.<Compare> ::= <=
+39.<Compare> ::= >=
+40.<Compare> ::= !=
+
+41.<Mag> ::= <Term> <Mag2>
+42.<Mag2> ::= + <Term> <Mag2>
+43.<Mag2> ::= - <Term> <Mag2>
+44.<Mag2> ::= ε
+
+45.<Term> ::= <Factor> <Term2>
+46.<Term2> ::= * <Factor> <Term2>
+47.<Term2> ::= / <Factor> <Term2>
+48.<Term2> ::= ε
+
+49.<Factor> ::= ( <Expr> )
+50.<Factor> ::= - <Factor>
+51.<Factor> ::= + <Factor>
+52.<Factor> ::= identifier
+53.<Factor> ::= number
+
+------------------------------------------------------------------------------------
+
+First(α)
+Follow(A)
+"A" é o símbolo não-terminal da esquerda da regra. "α" é o lado direito da regra.
+
+First(Function): {int, float}
+First(ArgList): {int, float}
+First(ArgList2): {,, ε}
+First(Arg): {int, float}
+First(Declaration): {int, float}
+First(Type): {int, float}
+First(IdentList): {identifier}
+First(IdentList2): {,, ε}
+First(Stmt): {identifier, number, int, float, if, for, while, ;, {, (, -, +}
+First(ForStmt): {for}
+First(OptExpr): {identifier, number, (, -, +, ε}
+First(WhileStmt): {while}
+First(IfStmt): {if}
+First(ElsePart): {else, ε}
+First(CompoundStmt): {{}
+First(StmtList): {identifier, number, int, float, if, for, while, ;, {, (, -, +}
+First(StmtList2): {identifier, number, int, float, if, for, while, ;, {, (, -, +, ε}
+First(Expr): {identifier, number, (, -, +}
+First(Rvalue): {identifier, number, (, -, +}
+First(Rvalue2): {==, <, >, <=, >=, !=, ε}
+First(Compare): {==, <, >, <=, >=, !=}
+First(Mag): {identifier, number, (, -, +}
+First(Mag2): {+, -, ε}
+First(Term): {identifier, number, (, -, +}
+First(Term2): {*, /, ε}
+First(Factor): {identifier, number, (, -, +}
+
+-----------------------------------------------------------------------------------
+Follow(Function): {$}
+Follow(ArgList): {)}
+Follow(ArgList2): {)}
+Follow(Arg): {,, )}
+Follow(Declaration): {else, identifier, int, float, if, for, while, ;, {, }}
+Follow(Type): {identifier}
+Follow(IdentList): {;}
+Follow(IdentList2): {;}
+Follow(OptExpr): {;, )}
+Follow(ElsePart): {else, identifier, int, float, if, for, while, ;, {, }}
+Follow(IfStmt): {else, identifier, int, float, if, for, while, ;, {, }}
+Follow(Stmt): {else, identifier, int, float, if, for, while, ;, {, }}
+Follow(ForStmt): {else, identifier, int, float, if, for, while, ;, {, }}
+Follow(WhileStmt): {else, identifier, int, float, if, for, while, ;, {, }}
+Follow(StmtList2): {}}
+Follow(StmtList): {}}
+Follow(CompoundStmt): {}, $}
+Follow(Declaration): {}}
+Follow(Mag2): {;, )}
+Follow(Mag): {;, )}
+Follow(Rvalue): {;, )}
+Follow(Rvalue2): {;, )}
+Follow(Expr): {;, ), }}
+Follow(Term2): {+ | - | ; | )}
+Follow(Term): {+ | - | ; | )}
+Follow(Factor): {* | / | + | - | ; | )}
