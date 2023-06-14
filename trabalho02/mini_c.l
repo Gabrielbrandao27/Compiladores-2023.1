@@ -1,3 +1,19 @@
+%{
+
+void count();
+//int yylineno = 0;
+#include <stdio.h>
+#include <string.h>
+#include "Python.h"
+#define YYSTYPE void *
+#include "tmp.tab.h"
+extern void *py_parser;
+extern void (*py_input)(PyObject *parser, char *buf, int *result, int max_size);
+#define returntoken(tok) /*printf("%d=%s\n", tok, yytext);*/ yylval = PyUnicode_FromString(strdup(yytext)); return (tok);
+#define YY_INPUT(buf,result,max_size) { (*py_input)(py_parser, buf, &result, max_size); }
+
+%}
+
 %%
 
 "identifier"        { count(); returntoken(IDENTIFIER)}
@@ -28,3 +44,25 @@
 "."                 { count(); returntoken(PERIOD)}
 
 %%
+
+yywrap()
+{
+        return(1);
+}
+
+int column = 0;
+
+void count()
+{
+        int i;
+
+        for (i = 0; yytext[i] != '\0'; i++)
+                if (yytext[i] == '\n')
+                        column = 0;
+                else if (yytext[i] == '\t')
+                        column += 8 - (column % 8);
+                else
+                        column++;
+
+        /*ECHO*/;
+}

@@ -2,14 +2,9 @@
 
 %}
 
-
-%%
-
 %token IDENTIFIER NUMBER INT FLOAT FOR WHILE IF ELSE
 %token PLUS MINUS TIMES DIVIDE ASSIGN LT GT LE GE EQ NE
 %token LPAREN RPAREN LBRACE RBRACE SEMICOLON COMMA PERIOD
-
-%%
 
 %start Function
 
@@ -148,8 +143,14 @@ Factor
     ;
 
 %%
+#include <stdio.h>
 
-%%
-int main(float var1){
-    float var2;
+extern char yytext[];
+extern int column;
+
+yyerror(s)
+char *s;
+{
+	fflush(stdout);
+	printf("\n%*s\n%*s\n", column, "^", column, s);
 }
