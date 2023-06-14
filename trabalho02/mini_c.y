@@ -1,8 +1,19 @@
+%{
+
+%}
+
+
+%%
+
 %token IDENTIFIER NUMBER INT FLOAT FOR WHILE IF ELSE
 %token PLUS MINUS TIMES DIVIDE ASSIGN LT GT LE GE EQ NE
 %token LPAREN RPAREN LBRACE RBRACE SEMICOLON COMMA PERIOD
 
+%%
 
+%start Function
+
+%%
 
 Function
     :Type IDENTIFIER LPAREN ArgList RPAREN CompoundStmt
@@ -135,3 +146,10 @@ Factor
     | IDENTIFIER
     | NUMBER
     ;
+
+%%
+
+%%
+int main(float var1){
+    float var2;
+}
