@@ -11,24 +11,20 @@
 %%
 
 Function
-    :Type IDENTIFIER LPAREN ArgList RPAREN CompoundStmt
+    : Type IDENTIFIER LPAREN ArgList RPAREN CompoundStmt
     ;
 
 ArgList
-    :Arg ArgList2
-    ;
-
-ArgList2
-    : COMMA Arg ArgList2
-    | ε
+    : Arg 
+    | ArgList, Arg
     ;
 
 Arg
-    :Type IDENTIFIER
+    : Type IDENTIFIER
     ;
 
 Declaration
-    :Type IdentList SEMICOLON
+    : Type IdentList SEMICOLON
     ;
 
 Type
@@ -37,14 +33,9 @@ Type
     ;
 
 IdentList
-    :IDENTIFIER IdentList2
+    : IDENTIFIER , IdentList
+    | IDENTIFIER
     ;
-
-IdentList2
-    : COMMA IdentList
-    | ε
-    ;
-
 
 Stmt
     : ForStmt 
@@ -57,12 +48,13 @@ Stmt
     ;
 
 ForStmt
-    : FOR LPAREN Expr SEMICOLON OptExpr SEMICOLON OptExpr RPAREN Stmt
+    : FOR LPAREN Expr RPAREN Stmt
+    | FOR LPAREN Expr SEMICOLON OptExpr RPAREN Stmt
+    | FOR LPAREN Expr SEMICOLON OptExpr SEMICOLON OptExpr RPAREN Stmt
     ;
 
 OptExpr
     : Expr
-    | ε
     ;
 
 WhileStmt
@@ -70,12 +62,12 @@ WhileStmt
     ;
 
 IfStmt
-    : IF LPAREN Expr RPAREN Stmt ElsePart
+    : IF LPAREN Expr RPAREN Stmt
+    | IF LPAREN Expr RPAREN Stmt ELSE Stmt
     ;
 
 ElsePart
     : ELSE Stmt
-    | ε
     ;
 
 CompoundStmt
@@ -83,12 +75,8 @@ CompoundStmt
     ;
 
 StmtList
-    : Stmt StmtList2
-    ;
-
-StmtList2
-    : StmtList
-    | ε
+    : Stmt
+    | StmtList Stmt
     ;
 
 Expr
@@ -97,12 +85,8 @@ Expr
     ;
 
 Rvalue
-    : Mag Rvalue2
-    ;
-
-Rvalue2
-    : Compare Rvalue
-    | ε
+    : Rvalue Compare Mag
+    | Mag
     ;
 
 Compare
@@ -115,23 +99,15 @@ Compare
     ;
 
 Mag
-    : Term Mag2
-    ;
-
-Mag2
-    : PLUS Term Mag2
-    | MINUS Term Mag2
-    | ε
+    : Mag PLUS Term
+    | Mag MINUS Term
+    | Term
     ;
 
 Term
-    : Factor Term2
-    ;
-
-Term2
-    : TIMES Factor Term2
-    | DIVIDE Factor Term2
-    | ε
+    : Term TIMES Factor
+    | Term DIVIDE Factor
+    | Factor
     ;
 
 Factor

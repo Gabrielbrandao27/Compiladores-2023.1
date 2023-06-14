@@ -42,6 +42,8 @@ extern void (*py_input)(PyObject *parser, char *buf, int *result, int max_size);
 ";"                 { count(); returntoken(SEMICOLON)}
 ","                 { count(); returntoken(COMMA)}
 "."                 { count(); returntoken(PERIOD)}
+[ \t\v\n\f]		    { count(); }
+.			        { /* ignore bad characters */ }
 
 %%
 
