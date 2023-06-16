@@ -1,12 +1,10 @@
 %{
-
+    #include <stdio.h>
 %}
 
 %token IDENTIFIER NUMBER INT FLOAT FOR WHILE IF ELSE
 %token PLUS MINUS TIMES DIVIDE ASSIGN LT GT LE GE EQ NE
 %token LPAREN RPAREN LBRACE RBRACE SEMICOLON COMMA PERIOD
-
-%start Function
 
 %%
 
@@ -16,7 +14,7 @@ Function
 
 ArgList
     : Arg 
-    | ArgList, Arg
+    | ArgList COMMA Arg
     ;
 
 Arg
@@ -33,7 +31,7 @@ Type
     ;
 
 IdentList
-    : IDENTIFIER , IdentList
+    : IDENTIFIER COMMA IdentList
     | IDENTIFIER
     ;
 
@@ -64,10 +62,6 @@ WhileStmt
 IfStmt
     : IF LPAREN Expr RPAREN Stmt
     | IF LPAREN Expr RPAREN Stmt ELSE Stmt
-    ;
-
-ElsePart
-    : ELSE Stmt
     ;
 
 CompoundStmt
@@ -119,14 +113,13 @@ Factor
     ;
 
 %%
-#include <stdio.h>
 
-extern char yytext[];
-extern int column;
-
-yyerror(s)
-char *s;
+void main(int argc, char **argv)
 {
-	fflush(stdout);
-	printf("\n%*s\n%*s\n", column, "^", column, s);
+  yyparse();
+}
+
+yyerror(char *s)
+{
+  fprintf(stderr, "error: %s\n", s);
 }
