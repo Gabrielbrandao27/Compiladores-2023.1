@@ -1,70 +1,77 @@
+L       [A-z]
+D       [0-9]
+
 %{
+        #include <stdio.h>
+        #include <string.h>
+        enum yytokentype {
+                IDENTIFIER = 99,
+                NUMBER = 1,
+                INT = 2,
+                FLOAT = 3,
+                FOR = 4,
+                WHILE = 5,
+                IF = 6,
+                ELSE = 7,
+                PLUS = 8,
+                MINUS = 9,
+                TIMES = 10,
+                DIVIDE = 11,
+                ASSIGN = 12,
+                LT = 13,
+                GT = 14,
+                LE = 15,
+                GE = 16,
+                EQ = 17,
+                NE = 18,
+                LPAREN = 19,
+                RPAREN = 20,
+                LBRACE = 21,
+                RBRACE = 22,
+                SEMICOLON = 23,
+                COMMA = 24,
+                PERIOD = 25,
+        };
 
-void count();
-//int yylineno = 0;
-#include <stdio.h>
-#include <string.h>
-#include "Python.h"
-#define YYSTYPE void *
-#include "tmp.tab.h"
-extern void *py_parser;
-extern void (*py_input)(PyObject *parser, char *buf, int *result, int max_size);
-#define returntoken(tok) /*printf("%d=%s\n", tok, yytext);*/ yylval = PyUnicode_FromString(strdup(yytext)); return (tok);
-#define YY_INPUT(buf,result,max_size) { (*py_input)(py_parser, buf, &result, max_size); }
-
+        int yylval;
 %}
 
 %%
 
-"identifier"        { count(); returntoken(IDENTIFIER)}
-"number"            { count(); returntoken(NUMBER)}
-"int"               { count(); returntoken(INT)}
-"float"             { count(); returntoken(FLOAT)}
-"for"               { count(); returntoken(FOR)}
-"while"             { count(); returntoken(WHILE)}
-"if"                { count(); returntoken(IF)}
-"else"              { count(); returntoken(ELSE)}
-"+"                 { count(); returntoken(PLUS)}
-"-"                 { count(); returntoken(MINUS)}
-"*"                 { count(); returntoken(TIMES)}
-"/"                 { count(); returntoken(DIVIDE)}
-"="                 { count(); returntoken(ASSIGN)}
-"<"                 { count(); returntoken(LT)}
-">"                 { count(); returntoken(GT)}
-"<="                { count(); returntoken(LE)}
-">="                { count(); returntoken(GE)}
-"=="                { count(); returntoken(EQ)}
-"!="                { count(); returntoken(NE)}
-"("                 { count(); returntoken(LPAREN)}
-")"                 { count(); returntoken(RPAREN)}
-"{"                 { count(); returntoken(LBRACE)}
-"}"                 { count(); returntoken(RBRACE)}
-";"                 { count(); returntoken(SEMICOLON)}
-","                 { count(); returntoken(COMMA)}
-"."                 { count(); returntoken(PERIOD)}
-[ \t\v\n\f]		    { count(); }
-.			        { /* ignore bad characters */ }
+"int"                             { return INT; }
+"float"                           { return FLOAT; }
+"for"                             { return FOR; }
+"while"                           { return WHILE; }
+"if"                              { return IF; }
+"else"                            { return ELSE; }
+"+"                               { return PLUS; }
+"-"                               { return MINUS; }
+"*"                               { return TIMES; }
+"/"                               { return DIVIDE; }
+"="                               { return ASSIGN; }
+"<"                               { return LT; }
+">"                               { return GT; }
+"<="                              { return LE; }
+">="                              { return GE; }
+"=="                              { return EQ; }
+"!="                              { return NE; }
+"("                               { return LPAREN; }
+")"                               { return RPAREN; }
+"{"                               { return LBRACE; }
+"}"                               { return RBRACE; }
+";"                               { return SEMICOLON; }
+","                               { return COMMA; }
+"."                               { return PERIOD; }
+{L}({L}|{D})*                     { return IDENTIFIER; }
+{D}({D})*("."{D}({D})*)?          { yylval = atoi(yytext); return NUMBER; }
+\n                                { /* ignore break line */ }
+[ \t]                             { /* ignore whitespace */ }
 
 %%
 
-yywrap()
+void main (int argc, char **argv)
 {
-        return(1);
-}
-
-int column = 0;
-
-void count()
-{
-        int i;
-
-        for (i = 0; yytext[i] != '\0'; i++)
-                if (yytext[i] == '\n')
-                        column = 0;
-                else if (yytext[i] == '\t')
-                        column += 8 - (column % 8);
-                else
-                        column++;
-
-        /*ECHO*/;
+        int tok;
+        while (tok = yylex())
+                printf("%d\n", tok);
 }
