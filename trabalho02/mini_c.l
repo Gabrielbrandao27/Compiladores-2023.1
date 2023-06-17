@@ -2,7 +2,7 @@ L       [A-z]
 D       [0-9]
 
 %{
-        # include "mini_c.tab.h"
+# include "mini_c.tab.h"
 %}
 
 %%
@@ -37,4 +37,3 @@ D       [0-9]
 [ \t]                             { /* ignore whitespace */ }
 
 %%
-

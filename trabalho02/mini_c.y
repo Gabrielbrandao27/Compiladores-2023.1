@@ -6,14 +6,16 @@
 %token PLUS MINUS TIMES DIVIDE ASSIGN LT GT LE GE EQ NE
 %token LPAREN RPAREN LBRACE RBRACE SEMICOLON COMMA PERIOD
 
+%right ELSE
+
 %%
 
 Function
     : Type IDENTIFIER LPAREN ArgList RPAREN CompoundStmt
     ;
 
-ArgList
-    : Arg 
+ArgList:
+     Arg 
     | ArgList COMMA Arg
     ;
 
@@ -117,6 +119,7 @@ Factor
 void main(int argc, char **argv)
 {
   yyparse();
+  printf("everything okay");
 }
 
 yyerror(char *s)

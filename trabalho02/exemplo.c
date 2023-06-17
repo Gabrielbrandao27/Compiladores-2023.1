@@ -1,6 +1,6 @@
 int main(int a, float b){
-    float coco;
-    int xixi;
-    if (coco = xixi)
-        xixi = coco;
+    float teste;
+    int variavel;
+    if (teste = variavel)
+        variavel = teste;
 }
