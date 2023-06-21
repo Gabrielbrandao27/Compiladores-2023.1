@@ -1,13 +1,16 @@
 int main(float param1, int param2){
-     int hello;
-     int i;
-     if (hello=2)
-          for (i=0; i=1*2+3; i=100)
-               float result;
+    int i;
+    param1 = 2;
+    if (param1 = 2)
+        for (i = 0; i = 1*2+3; i = 10)
+            param2 = 300;
 }
 
 float main(char param){
-     int j;
-        for (j=0; j=1*2+3; j=100)
-            float result;
+    int j;
+    float f;
+        for (j = 0; j = 1*2+3; j = 10)
+            f = 3.9;
+            param = 'a';
+    j = 20;
 }
