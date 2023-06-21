@@ -5,14 +5,19 @@
 %token IDENTIFIER NUMBER CHARACTER INT FLOAT CHAR FOR WHILE IF ELSE
 %token PLUS MINUS TIMES DIVIDE ASSIGN LT GT LE GE EQ NE
 %token LPAREN RPAREN LBRACE RBRACE SEMICOLON COMMA PERIOD
+%union {
+    char *str;
+    int i;
+    float f;
+}
 
 %right ELSE
 
 %%
 
 Function
-    : Type IDENTIFIER LPAREN ArgList RPAREN CompoundStmt
-    | Type IDENTIFIER LPAREN ArgList RPAREN CompoundStmt Function
+    : Type IDENTIFIER LPAREN ArgList RPAREN CompoundStmt { printf("1: %d", $<i>1); } 
+    | Type IDENTIFIER LPAREN ArgList RPAREN CompoundStmt Function /*{ printf("2: %d, %d, %d, %d, %d, %d\n", $1, $2, $3, $4, $5, $6); }*/
     ;
 
 ArgList
@@ -122,7 +127,7 @@ Factor
 void main(int argc, char **argv)
 {
   yyparse();
-  printf("everything okay");
+  printf("parsed");
 }
 
 yyerror(char *s)
