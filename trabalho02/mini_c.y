@@ -2,7 +2,7 @@
     #include <stdio.h>
 %}
 
-%token IDENTIFIER NUMBER INT FLOAT FOR WHILE IF ELSE
+%token IDENTIFIER NUMBER CHARACTER INT FLOAT CHAR FOR WHILE IF ELSE
 %token PLUS MINUS TIMES DIVIDE ASSIGN LT GT LE GE EQ NE
 %token LPAREN RPAREN LBRACE RBRACE SEMICOLON COMMA PERIOD
 
@@ -12,10 +12,11 @@
 
 Function
     : Type IDENTIFIER LPAREN ArgList RPAREN CompoundStmt
+    | Type IDENTIFIER LPAREN ArgList RPAREN CompoundStmt Function
     ;
 
-ArgList:
-     Arg 
+ArgList
+    : Arg 
     | ArgList COMMA Arg
     ;
 
@@ -30,6 +31,7 @@ Declaration
 Type
     : INT
     | FLOAT
+    | CHAR
     ;
 
 IdentList
@@ -112,6 +114,7 @@ Factor
     | PLUS Factor
     | IDENTIFIER
     | NUMBER
+    | CHARACTER
     ;
 
 %%

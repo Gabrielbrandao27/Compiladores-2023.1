@@ -1,5 +1,6 @@
 L       [A-z]
 D       [0-9]
+C       '([^'\\]|\\.)*'         
 
 %{
 # include "mini_c.tab.h"
@@ -9,6 +10,7 @@ D       [0-9]
 
 "int"                             { return INT; }
 "float"                           { return FLOAT; }
+"char"                            { return CHAR; }
 "for"                             { return FOR; }
 "while"                           { return WHILE; }
 "if"                              { return IF; }
@@ -33,6 +35,7 @@ D       [0-9]
 "."                               { return PERIOD; }
 {L}({L}|{D})*                     { return IDENTIFIER; }
 {D}({D})*("."{D}({D})*)?          { return NUMBER; }
+{C}                               { return CHARACTER; }
 \n                                { /* ignore break line */ }
 [ \t]                             { /* ignore whitespace */ }
 
