@@ -7,7 +7,6 @@ C       '([^'\\]|\\.)*'
 %}
 
 %%
-.i
 "int"                             { yylval.i = INT; return INT; }
 "float"                           { yylval.i = FLOAT; return FLOAT; }
 "char"                            { yylval.i = CHAR; return CHAR; }
@@ -35,7 +34,7 @@ C       '([^'\\]|\\.)*'
 "."                               { yylval.i = PERIOD; return PERIOD; }
 {L}({L}|{D})*                     { yylval.str = strdup(yytext); return IDENTIFIER; }
 {D}({D})*("."{D}({D})*)?          { yylval.f = atoi(yytext); return NUMBER; }
-{C}                               { yylval.str = atoi(yytext); return CHARACTER; }
+{C}                               { yylval.str = yytext; return CHARACTER; }
 \n                                { /* ignore break line */ }
 [ \t]                             { /* ignore whitespace */ }
 

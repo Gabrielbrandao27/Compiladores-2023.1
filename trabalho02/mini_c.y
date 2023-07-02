@@ -2,6 +2,7 @@
     #include <stdio.h>
 %}
 
+%error-verbose
 %token IDENTIFIER NUMBER CHARACTER INT FLOAT CHAR FOR WHILE IF ELSE
 %token PLUS MINUS TIMES DIVIDE ASSIGN LT GT LE GE EQ NE
 %token LPAREN RPAREN LBRACE RBRACE SEMICOLON COMMA PERIOD
@@ -12,12 +13,12 @@
 }
 
 %right ELSE
+%expect 1
 
 %%
 
 Function
-    : Type IDENTIFIER LPAREN ArgList RPAREN CompoundStmt { printf("1: %d", $<i>1); } 
-    | Type IDENTIFIER LPAREN ArgList RPAREN CompoundStmt Function /*{ printf("2: %d, %d, %d, %d, %d, %d\n", $1, $2, $3, $4, $5, $6); }*/
+    : Type IDENTIFIER LPAREN ArgList RPAREN CompoundStmt { printf("1: %s \n", $<str>2); } 
     ;
 
 ArgList
@@ -124,13 +125,34 @@ Factor
 
 %%
 
+struct context_type {
+    char * variable_name_and_context;
+    int type;
+};
+
+typedef struct context_type context_type;
+
+context_type * table[50];
+
 void main(int argc, char **argv)
 {
+
+    for (int i = 0; i < 50; i++){
+      table[i] = NULL;
+    };
+
+  if(table[0] == NULL){
+    printf("is null %p", table[0]);
+    table[0] = malloc(sizeof(context_type) * 5);
+    table[0][0].type = 12;
+    table[0][0].variable_name_and_context = "123";
+    printf(" \nis not null %s \n", table[0][0].variable_name_and_context);
+  };
   yyparse();
-  printf("parsed");
+  printf("parsed \n");
 }
 
 yyerror(char *s)
 {
-  fprintf(stderr, "error: %s\n", s);
+  printf( "error: %s %s \n", s, stderr);
 }

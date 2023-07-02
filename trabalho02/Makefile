@@ -8,4 +8,4 @@ mini_c mac: mini_c.l mini_c.y
 		bison -d mini_c.y -v
 		flex mini_c.l
 		gcc-12 -o output.o mini_c.tab.c lex.yy.c -ll
-		./output.o < exemplo.c
+		./output.o < exemplo.txt
