@@ -33,7 +33,8 @@ C       '([^'\\]|\\.)*'
 ","                               { yylval.i = COMMA; return COMMA; }
 "."                               { yylval.i = PERIOD; return PERIOD; }
 {L}({L}|{D})*                     { yylval.str = strdup(yytext); return IDENTIFIER; }
-{D}({D})*("."{D}({D})*)?          { yylval.f = atoi(yytext); return NUMBER; }
+{D}({D})*                          { yylval.f = atoi(yytext); return NUMBER_INT; }
+{D}({D})*("."{D}({D})*)           { yylval.f = atoi(yytext); return NUMBER_FLOAT; }
 {C}                               { yylval.str = yytext; return CHARACTER; }
 \n                                { /* ignore break line */ }
 [ \t]                             { /* ignore whitespace */ }

@@ -1,9 +1,44 @@
 %{
-    #include <stdio.h>
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct context_type {
+    char * variable;
+    char * context;
+    int type;
+    struct context_type * next;
+};
+
+typedef struct context_type context_type;
+
+context_type * append(context_type * actual, int type, char * variable, char * context){
+    printf("is null %p", actual);
+    if(actual == NULL){
+        printf("is null %p", actual);
+
+        actual = malloc(sizeof(context_type));
+        actual->type = type;
+        actual->variable = variable;
+        actual->context = context;
+        printf(" \nis not null %s \n", actual->variable);
+        return actual;
+    } else {
+        actual->next = malloc(sizeof(context_type));
+        actual->next->type = type;
+        actual->next->variable = variable;
+        actual->next->context = context;
+        return actual->next;
+    };
+}
+
+context_type * root = NULL;
+context_type * actual = NULL;
+
 %}
 
 %error-verbose
-%token IDENTIFIER NUMBER CHARACTER INT FLOAT CHAR FOR WHILE IF ELSE
+%token IDENTIFIER NUMBER_INT NUMBER_FLOAT CHARACTER INT FLOAT CHAR FOR WHILE IF ELSE
 %token PLUS MINUS TIMES DIVIDE ASSIGN LT GT LE GE EQ NE
 %token LPAREN RPAREN LBRACE RBRACE SEMICOLON COMMA PERIOD
 %union {
@@ -18,7 +53,8 @@
 %%
 
 Function
-    : Type IDENTIFIER LPAREN ArgList RPAREN CompoundStmt { printf("1: %s \n", $<str>2); } 
+    : Type IDENTIFIER LPAREN ArgList RPAREN CompoundStmt { printf("function: %d %s \n", $<i>1, $<str>2);  actual = append(actual, $<i>1 , $<str>2, "global"); } 
+    | Type IDENTIFIER LPAREN ArgList RPAREN CompoundStmt Function
     ;
 
 ArgList
@@ -27,7 +63,7 @@ ArgList
     ;
 
 Arg
-    : Type IDENTIFIER
+    : Type IDENTIFIER  { printf("arg: %s \n", $<str>2); } 
     ;
 
 Declaration
@@ -119,38 +155,20 @@ Factor
     | MINUS Factor
     | PLUS Factor
     | IDENTIFIER
-    | NUMBER
+    | NUMBER_INT
+    | NUMBER_FLOAT
     | CHARACTER
     ;
 
 %%
 
-struct context_type {
-    char * variable_name_and_context;
-    int type;
-};
-
-typedef struct context_type context_type;
-
-context_type * table[50];
-
 void main(int argc, char **argv)
 {
-
-    for (int i = 0; i < 50; i++){
-      table[i] = NULL;
-    };
-
-  if(table[0] == NULL){
-    printf("is null %p", table[0]);
-    table[0] = malloc(sizeof(context_type) * 5);
-    table[0][0].type = 12;
-    table[0][0].variable_name_and_context = "123";
-    printf(" \nis not null %s \n", table[0][0].variable_name_and_context);
-  };
   yyparse();
-  printf("parsed \n");
+  printf("\n actual: %s", actual->variable);
 }
+
+
 
 yyerror(char *s)
 {
