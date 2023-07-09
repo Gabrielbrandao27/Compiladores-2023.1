@@ -2,3 +2,8 @@ char main(float param1, int param2){
     int i, j, w, c;
     float a,b,c;
 }
+
+char main2(float param1, int param2){    
+    int i, j, w, c;
+    float a,b,c;
+}
