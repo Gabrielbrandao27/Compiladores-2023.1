@@ -1,9 +1,15 @@
 char main(float param1, int param2){    
-    int i, j, w, c;
+    int i, j, w, p;
     float a,b,c;
+    if (p = 2){
+        int d;
+    }
 }
-
 char main2(float param1, int param2){    
     int i, j, w, c;
     float a,b,c;
+
+    if (p = 2){
+        int d;
+    }
 }
