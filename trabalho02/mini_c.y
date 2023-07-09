@@ -2,38 +2,34 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 struct context_type {
     char * variable;
     char * context;
+    int is_function;
     int type;
     struct context_type * next;
+    int filled;
 };
 
 typedef struct context_type context_type;
 
 context_type * append(context_type * actual, int type, char * variable, char * context){
-    printf("is null %p", actual);
-    if(actual == NULL){
-        printf("is null %p", actual);
-
-        actual = malloc(sizeof(context_type));
-        actual->type = type;
-        actual->variable = variable;
-        actual->context = context;
-        printf(" \nis not null %s \n", actual->variable);
-        return actual;
-    } else {
-        actual->next = malloc(sizeof(context_type));
-        actual->next->type = type;
-        actual->next->variable = variable;
-        actual->next->context = context;
-        return actual->next;
-    };
+    printf("hereee\n");
+    actual->type = type;
+    actual->filled = 1;
+    actual->variable = variable;
+    actual->context = context;
+    actual->next = malloc(sizeof(context_type));
+    actual->next->filled = 0;
+    printf("aquiiii\n");
+    return actual->next;
 }
 
-context_type * root = NULL;
-context_type * actual = NULL;
+context_type * root;
+context_type * actual;
+
 
 %}
 
@@ -53,7 +49,7 @@ context_type * actual = NULL;
 %%
 
 Function
-    : Type IDENTIFIER LPAREN ArgList RPAREN CompoundStmt { printf("function: %d %s \n", $<i>1, $<str>2);  actual = append(actual, $<i>1 , $<str>2, "global"); } 
+    : Type IDENTIFIER LPAREN ArgList RPAREN CompoundStmt { printf("function %d %s %i \n", $<i>1 , $<str>2, actual->filled ); actual = append(actual, $<i>1 , $<str>2, "global"); printf("finished\n");}
     | Type IDENTIFIER LPAREN ArgList RPAREN CompoundStmt Function
     ;
 
@@ -63,11 +59,19 @@ ArgList
     ;
 
 Arg
-    : Type IDENTIFIER  { printf("arg: %s \n", $<str>2); } 
+    : Type IDENTIFIER { printf("arg %d %s %i \n", $<i>1 , $<str>2, actual->filled );  actual = append(actual, $<i>1 , $<str>2, "global"); }
     ;
 
 Declaration
-    : Type IdentList SEMICOLON
+    : Type IdentList SEMICOLON 
+    {
+      char * token = strtok($<str>2, ",");
+
+      while( token != NULL ) {
+          actual = append(actual, $<i>1 , token, "global");
+          token = strtok(NULL, ",");
+      }
+    }
     ;
 
 Type
@@ -77,7 +81,7 @@ Type
     ;
 
 IdentList
-    : IDENTIFIER COMMA IdentList
+    : IDENTIFIER COMMA IdentList { printf("Ident List %s %s \n", $<str>$, $<str>3);  strcat($<str>$, ","); strcat($<str>$, $<str>3); }
     | IDENTIFIER
     ;
 
@@ -164,8 +168,23 @@ Factor
 
 void main(int argc, char **argv)
 {
+  printf("before parse \n");
+  root = (context_type*) malloc(sizeof(context_type));
+  root->filled = 0;
+  actual = root;
+
   yyparse();
-  printf("\n actual: %s", actual->variable);
+
+  context_type * cs = root;
+  while(cs->filled){
+    printf("variable: %s of type %i \n", cs->variable, cs->type);
+    cs = cs->next;
+  }
+
+  printf("ended\n");
+
+  return 0;
+
 }
 
 

@@ -1,9 +1,4 @@
-char main(float param1, int param2){ // type int variable i context main
-    int i;
-}
-char main1(float param1, int param2){ // type int variable i context main1
-    int i;
-}
-char main2(float param1, int param2){ // type int variable i context main2
-    int i;
+char main(float param1, int param2){    
+    int i, j, w, c;
+    float a,b,c;
 }
