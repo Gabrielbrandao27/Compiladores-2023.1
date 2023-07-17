@@ -37,6 +37,22 @@ context_type * find(context_type * root, char * variable, char * context){
   return cs;
 }
 
+// char * AddCode(int n, ...)
+// {
+//     char * code = malloc(sizeof(char) * 200);
+ 
+//     va_list ptr;
+//     va_start(ptr, n);
+ 
+//     for (int i = 0; i < n; i++)
+//         strcat(code, va_arg(ptr, char));
+ 
+//     va_end(ptr);
+ 
+//     return code;
+// }
+ 
+
 context_type * root;
 context_type * actual;
 char context[50];
@@ -53,6 +69,8 @@ char context[50];
     int integer_value;
     float float_value;
     int type;
+    int linha;
+    char * code;
 }
 
 %right ELSE
@@ -157,7 +175,8 @@ Expr
     : IDENTIFIER ASSIGN Expr 
     { 
       context_type * s = find(root, $<str>1, context); 
-      if(!s->filled) { yyerror(&@1, "undeclared variable");  break;};
+      printf(" linha %d \n", $<linha>1);
+      if(!s->filled) { yyerror($<linha>1, "undeclared variable");  break;};
       printf("types %d %d \n", s->type, $<type>3); 
       if(s->type == $<type>3) {$<type>$ = $<type>3;} else {yyerror("type error");break;}  
     }
@@ -187,19 +206,20 @@ Mag
 Term
     : Term TIMES Factor {if($<type>1 == $<type>3) {$<type>$ = $<type>3;} else {yyerror("type error");break;}  }
     | Term DIVIDE Factor {if($<type>1 == $<type>3) {$<type>$ = $<type>3;} else {yyerror("type error");break;}  }
-    | Factor 
+    | Factor
     ;
 
 Factor
     : LPAREN Expr RPAREN
-    | MINUS Factor { $<type>$ = $<type>2; }
+    | MINUS Factor { $<type>$ = $<type>2;}
     | PLUS Factor { $<type>$ = $<type>2; }
     | IDENTIFIER 
     { 
       context_type * s = find(root, $<str>1, context);
-      if(!s->filled) {yyerror(&@1,"variable not declared "); break;};
+      printf(" linha %d \n", $<linha>1);
+      if(!s->filled) {yyerror($<linha>1, "variable not declared "); break;};
       printf("factor identifier: %s \n", s->variable); 
-      $<type>$ = s->type; 
+      $<type>$ = s->type;
     }
     | NUMBER_INT { $<type>$ = INT; }
     | NUMBER_FLOAT { $<type>$ = FLOAT; }
@@ -233,9 +253,7 @@ void main(int argc, char **argv)
 
 
 
-yyerror(YYLTYPE *bloc, char *s)
+yyerror(int linha, char *s)
 {
-  printf("%s %s Line %d:c%d to %d:c%d",s, stderr, 
-                        bloc->first_line, bloc->first_column,
-                        bloc->last_line, bloc->last_column);
+  printf("%s on Line %d ", s, linha);
 } 
