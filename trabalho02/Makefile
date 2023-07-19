@@ -4,7 +4,7 @@ mini_c: mini_c.l mini_c.y
 		cc -o $@ mini_c.tab.c lex.yy.c -lfl
 
 
-mini_c mac: mini_c.l mini_c.y
+mini_c mac:
 		bison -d mini_c.y -v
 		flex mini_c.l
 		gcc-12 -o output.o mini_c.tab.c lex.yy.c -ll

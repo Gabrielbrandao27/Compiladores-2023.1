@@ -3,41 +3,54 @@ D       [0-9]
 C       '([^'\\]|\\.)*'         
 
 %{
+# include "ptypes.h"
 # include "mini_c.tab.h"
 
-int linha = 1;
+
+token_metadata * NewMetadata(int line, char * code, int type){
+    token_metadata * m = (token_metadata *) malloc(sizeof(token_metadata));
+
+    m->line = line;
+    m->code = strdup(code);
+    m->type = type;
+
+    return m;
+}
+
 %}
+%option yylineno
 %%
-"int"                             { yylval.linha = linha; yylval.code = "int";  yylval.integer_value = INT; return INT; }
-"float"                           { yylval.linha = linha; linha; yylval.code = "float";  yylval.integer_value = FLOAT; return FLOAT; }
-"char"                            { yylval.linha = linha; linha; yylval.code = "char";  yylval.integer_value = CHAR; return CHAR; }
-"for"                             { yylval.linha = linha; linha; yylval.code = "for";  yylval.integer_value = FOR; return FOR; }
-"while"                           { yylval.linha = linha; linha; yylval.code = "while";  yylval.integer_value = WHILE; return WHILE; }
-"if"                              { yylval.linha = linha; linha; yylval.code = "if";  yylval.integer_value = IF; return IF; }
-"else"                            { yylval.linha = linha; linha; yylval.code = "else";  yylval.integer_value = ELSE; return ELSE; }
-"+"                               { yylval.linha = linha; linha; yylval.code = "+";  yylval.integer_value = PLUS; return PLUS; }
-"-"                               { yylval.linha = linha; linha; yylval.code = "-";  yylval.integer_value = MINUS; return MINUS; }
-"*"                               { yylval.linha = linha; linha; yylval.code = "*";  yylval.integer_value = TIMES; return TIMES; }
-"/"                               { yylval.linha = linha; linha; yylval.code = "/";  yylval.integer_value = DIVIDE; return DIVIDE; }
-"="                               { yylval.linha = linha; linha; yylval.code = "=";  yylval.integer_value = ASSIGN; return ASSIGN; }
-"<"                               { yylval.linha = linha; linha; yylval.code = "<";  yylval.integer_value = LT; return LT; }
-">"                               { yylval.linha = linha; linha; yylval.code = ">";  yylval.integer_value = GT; return GT; }
-"<="                              { yylval.linha = linha; linha; yylval.code = "<=";  yylval.integer_value = LE; return LE; }
-">="                              { yylval.linha = linha; linha; yylval.code = ">=";  yylval.integer_value = GE; return GE; }
-"=="                              { yylval.linha = linha; linha; yylval.code = "==";  yylval.integer_value = EQ; return EQ; }
-"!="                              { yylval.linha = linha; linha; yylval.code = "!=";  yylval.integer_value = NE; return NE; }
-"("                               { yylval.linha = linha; linha; yylval.code = "(";  yylval.integer_value = LPAREN; return LPAREN; }
-")"                               { yylval.linha = linha; linha; yylval.code = ")";  yylval.integer_value = RPAREN; return RPAREN; }
-"{"                               { yylval.linha = linha; linha; yylval.code = "{";  yylval.integer_value = LBRACE; return LBRACE; }
-"}"                               { yylval.linha = linha; linha; yylval.code = "}";  yylval.integer_value = RBRACE; return RBRACE; }
-";"                               { yylval.linha = linha; linha; yylval.code = ";";  yylval.integer_value = SEMICOLON; return SEMICOLON; }
-","                               { yylval.linha = linha; linha; yylval.code = ",";  yylval.integer_value = COMMA; return COMMA; }
-"."                               { yylval.linha = linha; linha; yylval.code = ".";  yylval.integer_value = PERIOD; return PERIOD; }
-{L}({L}|{D})*                     { yylval.linha = linha; yylval.code = strdup(yytext); yylval.str = strdup(yytext); return IDENTIFIER; }
-{D}({D})*                         { yylval.linha = linha; yylval.code = strdup(yytext); yylval.float_value = atoi(yytext); return NUMBER_INT; }
-{D}({D})*("."{D}({D})*)           { yylval.linha = linha; yylval.code = strdup(yytext); yylval.float_value = atoi(yytext); return NUMBER_FLOAT; }
-{C}                               { yylval.linha = linha; yylval.code = strdup(yytext); yylval.str = yytext; return CHARACTER; }
-\n                                {  }
+
+"int"                             { yylval.metadata = *(NewMetadata(yylineno, "int", INT)); return INT; }
+"float"                           { yylval.metadata = *(NewMetadata(yylineno, "float", FLOAT)); return FLOAT; }
+"char"                            { yylval.metadata = *(NewMetadata(yylineno, "char", CHAR)); return CHAR; }
+"for"                             { yylval.metadata = *(NewMetadata(yylineno, "for", FOR)); return FOR; }
+"while"                           { yylval.metadata = *(NewMetadata(yylineno, "while", WHILE)); return WHILE; }
+"if"                              { yylval.metadata = *(NewMetadata(yylineno, "if", IF)); return IF; }
+"else"                            { yylval.metadata = *(NewMetadata(yylineno, "else", ELSE)); return ELSE; }
+"+"                               { yylval.metadata = *(NewMetadata(yylineno, "+", PLUS)); return PLUS; }
+"-"                               { yylval.metadata = *(NewMetadata(yylineno, "-", MINUS)); return MINUS; }
+"*"                               { yylval.metadata = *(NewMetadata(yylineno, "*", TIMES)); return TIMES; }
+"/"                               { yylval.metadata = *(NewMetadata(yylineno, "/", DIVIDE)); return DIVIDE; }
+"="                               { yylval.metadata = *(NewMetadata(yylineno, "=", ASSIGN)); return ASSIGN; }
+"<"                               { yylval.metadata = *(NewMetadata(yylineno, "<", LT)); return LT; }
+">"                               { yylval.metadata = *(NewMetadata(yylineno, ">", GT)); return GT; }
+"<="                              { yylval.metadata = *(NewMetadata(yylineno, "<=", LE)); return LE; }
+">="                              { yylval.metadata = *(NewMetadata(yylineno, ">=", GE)); return GE; }
+"=="                              { yylval.metadata = *(NewMetadata(yylineno, "==", EQ)); return EQ; }
+"!="                              { yylval.metadata = *(NewMetadata(yylineno, "!=", NE)); return NE; }
+"("                               { yylval.metadata = *(NewMetadata(yylineno, "(", LPAREN)); return LPAREN; }
+")"                               { yylval.metadata = *(NewMetadata(yylineno, ")", RPAREN)); return RPAREN; }
+"{"                               { yylval.metadata = *(NewMetadata(yylineno, "{", LBRACE)); return LBRACE; }
+"}"                               { yylval.metadata = *(NewMetadata(yylineno, "}", RBRACE)); return RBRACE; }
+";"                               { yylval.metadata = *(NewMetadata(yylineno, ";", SEMICOLON)); return SEMICOLON; }
+","                               { yylval.metadata = *(NewMetadata(yylineno, ",", COMMA)); return COMMA; }
+"."                               { yylval.metadata = *(NewMetadata(yylineno, ".", PERIOD)); return PERIOD; }
+{L}({L}|{D})*                     { yylval.metadata = *(NewMetadata(yylineno, yytext, IDENTIFIER)); return IDENTIFIER; }
+{D}({D})*                         { yylval.metadata = *(NewMetadata(yylineno, yytext, NUMBER_INT)); return NUMBER_INT; }
+{D}({D})*("."{D}({D})*)           { yylval.metadata = *(NewMetadata(yylineno, yytext, NUMBER_FLOAT)); return NUMBER_FLOAT; }
+{C}                               { yylval.metadata = *(NewMetadata(yylineno, yytext, CHARACTER)); return CHARACTER; }
+\n                                { }
 [ \t]                             { /* ignore whitespace */ }
 
 %%

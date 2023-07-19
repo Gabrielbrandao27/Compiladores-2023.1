@@ -1,15 +1,19 @@
 char main(float param1, int param2){    
     int i, j, w, p;
-    float a,b,c;
-    if (p = 2){
-        int d;
+    for (i + a){
+        float m;
     }
 }
-char main2(float param1, int param2){    
-    int i, j, w, c;
-    float a,b,c;
-
-    if (p = 2){
-        int d;
+char robson(float param1, int param2){    
+    int i, j, w, p;
+    float g;
+    if (i + g){
+        float m;
+    }
+}
+char chia(float param1, int param2){    
+    int i, j, w, p;
+    for (i = 2; p =2){
+        float m;
     }
 }
