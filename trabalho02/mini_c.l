@@ -11,7 +11,8 @@ token_metadata * NewMetadata(int line, char * code, int type){
     token_metadata * m = (token_metadata *) malloc(sizeof(token_metadata));
 
     m->line = line;
-    m->code = strdup(code);
+    m->code = (char *) malloc(sizeof(char) * 1000);
+    strcat(m->code, code);
     m->type = type;
 
     return m;

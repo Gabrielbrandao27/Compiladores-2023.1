@@ -40,11 +40,17 @@ context_type * find(context_type * root, char * variable, char * context){
 }
 
 void join(char * s1, char * s2){
-  if ((strcmp(s2, "}") == 0) || (strcmp(s1, "{") == 0) || (strcmp(s1, ";") == 0))
+  if ((strcmp(s1, "{") == 0) || (strcmp(s1, ";") == 0) || strcmp(s1, "}") == 0)
   {
     strcat(s1, "\n");
     strcat(s1, s2);
-  }else{
+  }
+  else if (strcmp(s2, "}") == 0) {
+    strcat(s2, "\n");
+    strcat(s1, s2);
+  }  
+  else{
+
     strcat(s1, " ");
     strcat(s1, s2);
   }
@@ -149,29 +155,49 @@ Stmt
 
 ForStmt
     : FOR LPAREN Expr RPAREN Stmt {
-      // char label_str[15];
-      // sprintf(label_str, "LABEL %d", label_counter++);
-      // $$.code = strdup("if");
-
-      join($$.code, $2.code); join($$.code, $3.code); join($$.code, $4.code); 
+      char label_str_1[15];
+      sprintf(label_str_1, "L%d", label_counter++);
+      $$.code = (char *) malloc(1000);
+      join($$.code, label_str_1); 
+      join($$.code, "if"); 
+      join($$.code, $2.code); 
+      join($$.code, $3.code); 
+      join($$.code, $4.code);
+      join($$.code, "{ \n DO"); 
       join($$.code, $5.code);
+      join($$.code, "GOTO");
+      join($$.code, label_str_1);
+      strcat($$.code, "}");
     }
     | FOR LPAREN Expr SEMICOLON OptExpr RPAREN Stmt {
-      // char label_str[15];
-      // sprintf(label_str, "LABEL %d", label_counter++);
-      // join($$.code, "\n");
-      // join($$.code, label_str);
-      // $$.code = strdup("if");
+      char label_str_1[15];
+      char * final = (char *) malloc(sizeof(char) * 500);
+      $$.code = (char *) malloc(sizeof(char) * 500);
+      sprintf(label_str_1, "L%d ", label_counter++);
+      join($$.code, label_str_1); 
+      join($$.code, "if"); 
       join($$.code, $2.code); join($$.code, $3.code); join($$.code, $4.code); join($$.code, $5.code); join($$.code, $6.code); 
-      join($$.code, $7.code); 
+      join($$.code, "{ \n DO"); 
+      join($$.code, $7.code);
+       join($$.code, "GOTO ");
+      strcat($$.code, label_str_1);
+      strcat($$.code, "}");
     }
     | FOR LPAREN Expr SEMICOLON OptExpr SEMICOLON OptExpr RPAREN Stmt{
-      // char label_str[15];
-      // sprintf(label_str, "LABEL %d", label_counter++);
-      // $$.code = strdup("if");
+      char label_str_1[15];
+      char * final = (char *) malloc(sizeof(char) * 500);
+      $$.code = (char *) malloc(sizeof(char) * 500);
+      sprintf(label_str_1, "L%d ", label_counter++);
+      join($$.code, label_str_1); 
+      join($$.code, "if"); 
       join($$.code, $2.code); join($$.code, $3.code); join($$.code, $4.code); join($$.code, $5.code); join($$.code, $6.code); 
       join($$.code, $7.code); join($$.code, $8.code); 
+            join($$.code, "{ \n DO"); 
       join($$.code, $9.code); 
+       join($$.code, "GOTO ");
+      strcat($$.code, label_str_1);
+      strcat($$.code, "}");
+
     }
     ;
 
