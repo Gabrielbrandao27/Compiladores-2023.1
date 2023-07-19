@@ -4,15 +4,22 @@ char main(float param1, int param2){
         float m;
     }
 }
-char chia(float param1, int param2){    
+char r3(float param1, int param2){    
     int i, j, w, p;
     for (i = 2; p =2){
         float m;
     }
 }
-char chia(float param1, int param2){    
+char r2(float param1, int param2){    
     int i, j, w, p;
     for (i = 2; p =2; i = 3){
+        float m;
+    }
+}
+
+char r(float param1, int param2){    
+    int i, j, w, p;
+    while (i = 2){
         float m;
     }
 }

@@ -46,6 +46,7 @@ void join(char * s1, char * s2){
     strcat(s1, s2);
   }
   else if (strcmp(s2, "}") == 0) {
+    strcat(s1, "\n");
     strcat(s2, "\n");
     strcat(s1, s2);
   }  
@@ -171,7 +172,6 @@ ForStmt
     }
     | FOR LPAREN Expr SEMICOLON OptExpr RPAREN Stmt {
       char label_str_1[15];
-      char * final = (char *) malloc(sizeof(char) * 500);
       $$.code = (char *) malloc(sizeof(char) * 500);
       sprintf(label_str_1, "L%d ", label_counter++);
       join($$.code, label_str_1); 
@@ -185,7 +185,6 @@ ForStmt
     }
     | FOR LPAREN Expr SEMICOLON OptExpr SEMICOLON OptExpr RPAREN Stmt{
       char label_str_1[15];
-      char * final = (char *) malloc(sizeof(char) * 500);
       $$.code = (char *) malloc(sizeof(char) * 500);
       sprintf(label_str_1, "L%d ", label_counter++);
       join($$.code, label_str_1); 
@@ -207,7 +206,17 @@ OptExpr
 
 WhileStmt
     : WHILE LPAREN Expr RPAREN Stmt {
-      join($$.code, $2.code); join($$.code, $3.code); join($$.code, $4.code); join($$.code, $5.code);
+      char label_str_1[15];
+      $$.code = (char *) malloc(sizeof(char) * 500);
+      sprintf(label_str_1, "L%d ", label_counter++);
+      join($$.code, label_str_1); 
+      join($$.code, "if"); 
+      join($$.code, $2.code); join($$.code, $3.code); join($$.code, $4.code);
+      join($$.code, "{ \n DO"); 
+      join($$.code, $5.code);
+      join($$.code, "GOTO");
+      join($$.code, label_str_1);
+      strcat($$.code, "}");
     }
     ;
 
