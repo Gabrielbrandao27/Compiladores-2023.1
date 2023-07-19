@@ -13,5 +13,5 @@ mini_c_geracao_codigo:
 mini_c_exemplo_erro:
 		bison -d mini_c.y -v
 		flex mini_c.l
-		gcc-12 -o output.o mini_c.tab.c lex.yy.c -ll
+		gcc-12 -o output.o mini_c.tab.c lex.yy.c -ll -Wno-implicit-function-declaration -Wno-discarded-qualifiers
 		./output.o < exemplo-tratamento-erro.txt
